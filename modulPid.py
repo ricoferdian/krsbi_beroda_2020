@@ -93,6 +93,7 @@ def teta(tengah_x, tengah_y, titik_x, titik_y):
     return oteta
 
 def pidRobot(tetaBall, realDistanceX, realDistanceY, ser):
+    print('VALUE SEBELUM KALKULASI',tetaBall,realDistanceX,realDistanceY)
 
     import serial
 
@@ -113,31 +114,6 @@ def pidRobot(tetaBall, realDistanceX, realDistanceY, ser):
 
     global iTeta, iX, iY, destroy, sendSerialMode, previousErrorTeta, previousErrorRealDistanceX, previousErrorRealDistanceY
 
-    # print sendSerialMode
-    if sendSerialMode == True:
-
-        try:
-            ser.open()
-        except:
-            if ser.is_open == False:
-                sendSerialMode = False
-        finally:
-            pass
-
-            # sendSerialMode=False
-            # print  "tidak bisa mengirim"
-
-    #            if ser.is_open==False:
-
-    elif sendSerialMode == False:
-        try:
-            if ser.is_open == True:
-                ser.write(b'*0,0,0,0#')
-                ser.close()
-                # print msg
-        except:
-            pass
-
     if tetaBall != None:
         errorTeta = 0 - tetaBall
         pTeta = errorTeta
@@ -148,6 +124,9 @@ def pidRobot(tetaBall, realDistanceX, realDistanceY, ser):
         pidTeta = (KpTeta * pTeta) + (KiTeta * iTeta) + (KdTeta * dTeta)
         pidTeta = constraint(pidTeta, -150, 150)
         previousErrorTeta = errorTeta
+
+        pidX = 0
+        pidY = 0
 
         # realDistanceX
         # pidX
@@ -181,52 +160,17 @@ def pidRobot(tetaBall, realDistanceX, realDistanceY, ser):
         if realDistanceX == None and realDistanceY == None:
             pidX = 0
             pidY = 0
-        # vMotor1 = pidX * sin(radians(30)) + pidY * cos(radians(30)) + lRobot * pidTeta
-        # vMotor2 = pidX * sin(radians(30)) - pidY * cos(radians(30)) + lRobot * pidTeta
-        # vMotor3 = -pidX + lRobot * pidTeta
-        #
-        # # out kecepatan motor
-        #
-        # # vMotor1=lRobot*pidTeta
-        # # vMotor2=lRobot*pidTeta
-        # # vMotor3=lRobot*pidTeta
-        #
-        # vMotor1 = round(vMotor1, 2)
-        # vMotor3 = round(vMotor3, 2)
+
         # msg = "*" + repr(vMotor1) + ",0" + "," + repr(vMotor2) + "," + repr(vMotor3) + "#"
-        msg = "*"+repr(realDistanceX)+","+repr(realDistanceY)+","+repr(pidTeta)+"#"
+        # msg = "*"+repr(realDistanceX)+","+repr(realDistanceY)+","+repr(pidTeta)+"#"
+        msg = "*"+repr(pidX)+","+repr(pidY)+","+repr(pidTeta)+"#"
+        # msg = "*0,1250,0#"
+
         print('msg for PID',msg)
-        print('msg for PID',msg)
-        print('msg for PID',msg)
-        print('msg for PID',msg)
-        print('msg for PID',msg)
-        print('msg for PID',msg)
-        print('msg for PID',msg)
-        print('msg for PID',msg)
-        print('msg for PID',msg)
-        print('msg for PID',msg)
-        print('msg for PID',msg)
-        print('msg for PID',msg)
-        ser.open()
+        # ser.open()
         ser.write(msg.encode())
         currentTime = time.time()
-    #     # print currentTime
-    #     try:
-    #         if ser.is_open == True:
-    #         elif ser.is_open == False:
-    #             ser.open()
-    #         else:
-    #             print
-    #             "ada masalah"
-    #     except:
-    #         print
-    #         "tidak bisa kirim"
-    #         try:
-    #             ser.close()
-    #             ser.open()
-    #         except:
-    #             sendSerialMode = False
-    #         pass
+
     elif tetaBall == None:
         if time.time() - currentTime > 1.0:
             try:

@@ -2,9 +2,15 @@ from math import *
 
 setRotateOnCam = -90
 
-# fungsi jarak
-def distPix2real(rPix):
-    return (0.07423670095971158*rPix*rPix)-(17.404005277931052*rPix)+1116.5834444460588
+# fungsi jarak (Jaraknya miring kamera)
+def distPix2real(miring):
+    if(miring > 25):
+        return sqrt(abs(pow((miring * 1.6560563) + 29.943605, 2) - 6400))
+    else:
+        return 80
+
+# def distPix2real(rPix):
+#     return (0.07423670095971158*rPix*rPix)-(17.404005277931052*rPix)+1116.5834444460588
 
 # def distPix2real(rPix):
 #     return (rPix * 2.1059295 - 133.71944)

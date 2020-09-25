@@ -14,10 +14,15 @@ from modulPid import pidRobot
 
 global myCoordX
 global myCoordY
+global myCoordLapanganX
+global myCoordLapanganY
+global bolaLastSeenX
+global bolaLastSeenY
 # global myRes
 global myGyro
 
-gyroCalibration = 90
+#Gyro calibration sesuaikan dengan sudut gyro saat menghadap gawang
+gyroCalibration = 0
 
 global ser
 
@@ -31,13 +36,41 @@ def detect(save_img=False):
     maxYLapangan = 600
     splitSizeGrid = 50
 
+    global myCoordX
+    global myCoordY
+    global bolaLastSeenX
+    global bolaLastSeenX
     myCoordX = 0
     myCoordY = 0
+    bolaLastSeenX = 0
+    bolaLastSeenY = 0
+    global myCoordLapanganX
+    global myCoordLapanganY
+
+    if(myCoordX is not None):
+        myCoordLapanganX = myCoordX
+    else:
+        myCoordLapanganX = 0
+    if(myCoordY is not None):
+        myCoordLapanganY = myCoordY
+    else:
+        myCoordLapanganY = 0
     myRes = 0
     myGyro = 0
 
     gridLapangan = gridGenerator(maxXLapangan,maxYLapangan,splitSizeGrid)
 
+    # matrix = [
+    #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    # ]
     matrix = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -158,6 +191,33 @@ def detect(save_img=False):
                 tetaBall = None
                 realDistanceX = 0
                 realDistanceY = 0
+
+                # matrix = [
+                #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                #     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                # ]
+
+                matrix = [
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ]
                 if(len(arr_objects)>0):
                     for object in arr_objects:
                         #Iterate object dan definisikan lokasinya di lapangan
@@ -171,11 +231,13 @@ def detect(save_img=False):
                         if(object['label']=='bola'):
                             isNemuBola = True
                             if(not isBawaBola):
-                                print('AKU NYARI BOLA')
+                                print('AKU NYARI BOLA', object)
                                 isNyariBola = True
                                 end = {}
                                 end['x'] = object['x']
                                 end['y'] = object['y']
+                                bolaLastSeenX = object['x']
+                                bolaLastSeenY = object['y']
                                 tetaBall = object['tetaObj']
                                 realDistanceX = object['realDistanceX']
                                 realDistanceY = object['realDistanceY']
@@ -189,7 +251,7 @@ def detect(save_img=False):
                         elif (object['label']=='gawang'):
                             if (isBawaBola):
                                 #Cari gawang
-                                print('AKU NYARI GAWANG')
+                                print('AKU NYARI GAWANG', object)
                                 end = {}
                                 end['x'] = object['x']
                                 end['y'] = object['y']
@@ -202,6 +264,7 @@ def detect(save_img=False):
                                     end = None
                                     isEndpointInit = True
                         elif(object['label'] == 'obstacle'):
+                            print('ADA OBSTACLE', object)
                             obstacle = {}
                             obstacle['x'] = object['x']
                             obstacle['y'] = object['y']
@@ -215,29 +278,32 @@ def detect(save_img=False):
                             elif(obstacleGridLoc[1]<0):
                                 obstacleGridLoc[1] = 0
 
-                            print("obstacleGridLoc",obstacleGridLoc)
-                            matrix[obstacleGridLoc[0]][obstacleGridLoc[1]] = 0
+                            # print("obstacleGridLoc",obstacleGridLoc)
+                            matrix[obstacleGridLoc[1]][obstacleGridLoc[0]] = 0
                             if(not isNemuBola or not isBawaBola):
                                 if(not isEndpointInit):
                                     end = None
-                        elif(not isNemuBola):
+                        if(not isNemuBola):
                             #Berputar-putar sampai melihat bola
                             print('AKU BINGUNG BOLANYA DIMANA')
                             end = {}
-                            end['x'] = 0
-                            end['y'] = 0
+                            end['x'] = bolaLastSeenX
+                            end['y'] = bolaLastSeenY
                         else:
                             if(not isEndpointInit):
                                 end = None
                 else:
                     end = None
 
-                start['x'] = myCoordX
-                start['y'] = myCoordY
+                start['x'] = myCoordLapanganX
+                start['y'] = myCoordLapanganY
 
                 paths = []
-                print('end now',end)
+                print('start',start)
+                print('matrix',matrix)
                 if(end is not None):
+                    print('start',start)
+                    print('end',end)
                     startGridLoc = getGridLocationFromCoord(start,splitSizeGrid)
                     endGridLoc = getGridLocationFromCoord(end,splitSizeGrid)
                     if(startGridLoc[0]>8):
@@ -259,28 +325,82 @@ def detect(save_img=False):
                         endGridLoc[1] = 0
                     print('startGridLoc',startGridLoc)
                     print('endGridLoc',endGridLoc)
-                    print('matrix',matrix)
                     paths = findPathRobot(startGridLoc,matrix,endGridLoc)
 
+                newCoordX = 0
+                newCoordY = 0
                 print('paths',paths)
-                if(len(paths)>1):
-                    myCoordX = gridLapangan[paths[1][0]][paths[1][1]][0]
-                    myCoordY = gridLapangan[paths[1][0]][paths[1][1]][1]
+                # if(len(paths)>1):
+                #     print('PAKE PATHFINDING')
+                #     newCoordX = gridLapangan[paths[1][0]][paths[1][1]][0]
+                #     newCoordY = gridLapangan[paths[1][0]][paths[1][1]][1]
+                # 
+                #     # Iterate balikin lagi ke relatif
+                #     rotationAngle = myGyro + gyroCalibration
+                #     # X dan Y dibalik karena kamera bacanya kebalik
+                #     print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
+                #     print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
+                #     newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
+                #     print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
+                #     print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
+                #     
+                #     if(myCoordX>newCoordX):
+                #         newCoordX = myCoordX - newCoordX
+                #     else:
+                #         newCoordX = newCoordX - myCoordX
+                #     if(myCoordY>newCoordY):
+                #         newCoordY = myCoordY - newCoordY
+                #     else:
+                #         newCoordY = newCoordY - myCoordY
+                # 
+                #     print('ROBOT AKAN PERGI KE ',paths[1])
+                #     print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
+                #     print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
+                # elif(end is not None):
+                #     print('NYARI TANPA PATHFINDING BERDASARKAN END')
+                #     endGridLoc = getGridLocationFromCoord(end,splitSizeGrid)
+                #     newCoordX = gridLapangan[endGridLoc[0]][endGridLoc[1]][0]
+                #     newCoordY = gridLapangan[endGridLoc[0]][endGridLoc[1]][1]
+                # 
+                #     # Iterate balikin lagi ke relatif
+                #     rotationAngle = myGyro + gyroCalibration
+                #     # X dan Y dibalik karena kamera bacanya kebalik
+                #     print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
+                #     print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
+                #     newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
+                #     print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
+                #     print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
+                # 
+                #     print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
+                #     print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
+                # else:
+                #     print('LANGSUNG NYARI TANPA PATHFINDING BERDASARKAN YANG DILIHAT')
+                #     newCoordX = realDistanceX
+                #     newCoordY = realDistanceY
+                #     print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
+                #     print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
 
-                    print('PATHS ',paths)
+                print('LANGSUNG NYARI TANPA PATHFINDING BERDASARKAN YANG DILIHAT')
+                newCoordX = realDistanceX
+                newCoordY = realDistanceY
+                print('ROBOT AKAN PERGI KE REAL COORD X', newCoordX)
+                print('ROBOT AKAN PERGI KE REAL COORD Y', newCoordY)
 
-                    # Iterate balikin lagi ke relatif
-                    rotationAngle = myGyro + gyroCalibration
-                    # X dan Y dibalik karena kamera bacanya kebalik
-                    myCoordX, myCoordX = rotateMatrix(myCoordX, myCoordY,rotationAngle)
+                # print('LANGSUNG NYARI TANPA PATHFINDING')
+                # newCoordX = realDistanceX
+                # newCoordY = realDistanceY
+                # print('ROBOT AKAN PERGI KE REAL COORD X', newCoordX)
+                # print('ROBOT AKAN PERGI KE REAL COORD Y', newCoordY)
 
-                    print('ROBOT AKAN PERGI KE ',paths[1])
-                    print('ROBOT AKAN PERGI KE REAL COORD X',myCoordX)
-                    print('ROBOT AKAN PERGI KE REAL COORD Y',myCoordY)
+                msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) + "#"
+                # msg = "*0,1250,0#"
 
-                pidRobot(tetaBall, myCoordX, myCoordY, ser)
+                print('msg for PID', msg)
+                # ser.open()
+                ser.write(msg.encode())
+                # pidRobot(tetaBall, newCoordX, newCoordY, ser)
 
-                print('REAL LOCATION x : ',myCoordX,'  y :',myCoordY)
+                print('REAL LOCATION x : ',myCoordX,'  y :',myCoordY, 'tetaball',tetaBall)
 
 
             # Process if no object detected
@@ -346,6 +466,12 @@ def readSerialData():
 
     global myCoordX
     global myCoordY
+
+    global myCoordLapanganX
+    global myCoordLapanganY
+    myCoordLapanganX = 0
+    myCoordLapanganY = 0
+
     global myRes
     global myGyro
     while (True):
@@ -367,6 +493,24 @@ def readSerialData():
                     myCoordX = xyresgyro[0]
                     myCoordY = xyresgyro[1]
                     myGyro = xyresgyro[2]
+                    #myCoordY = depan robot. Terkalibrasi sebagai x positif di lapangan (menghadap gawang = 0 derajat)
+                    #myCoordX = kanan robot. Terkalibrasi sebagai y positif di lapangan (menghadap kanan gawang = 90 derajat)
+                    robotCoordX, robotCoordY = rotateMatrix(myCoordY,myCoordX,myGyro - gyroCalibration)
+                    # print('myCoordX : ',myCoordX,' myCoordY : ',myCoordY)
+                    print('robotCoordX : ',robotCoordX,' robotCoordY : ',robotCoordY)
+                    if(robotCoordX<0):
+                        myCoordLapanganX += robotCoordX - myCoordLapanganX
+                    elif(robotCoordX>0):
+                        myCoordLapanganX += robotCoordX - myCoordLapanganX
+                    else:
+                        myCoordLapanganX = 0
+                    if(robotCoordY<0):
+                        myCoordLapanganY += robotCoordY - myCoordLapanganY
+                    elif(robotCoordX>0):
+                        myCoordLapanganY += robotCoordY - myCoordLapanganY
+                    else:
+                        myCoordLapanganY = 0
+                    print('myCoordLapanganX : ',myCoordLapanganX,' myCoordLapanganY : ',myCoordLapanganY)
 
                     # print('myCoordX',myCoordX)
                     # print('myCoordY',myCoordY)

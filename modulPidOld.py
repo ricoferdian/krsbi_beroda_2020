@@ -72,17 +72,11 @@ def pidRobot(tetaBall, realDistanceX, realDistanceY, ser):
         finally:
             pass
 
-            # sendSerialMode=False
-            # print  "tidak bisa mengirim"
-
-    #            if ser.is_open==False:
-
     elif sendSerialMode == False:
         try:
             if ser.is_open == True:
                 ser.write(b'*0,0,0,0#')
                 ser.close()
-                # print msg
         except:
             pass
 
