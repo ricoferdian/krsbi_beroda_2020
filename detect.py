@@ -20,11 +20,24 @@ global bolaLastSeenX
 global bolaLastSeenY
 # global myRes
 global myGyro
+global obstacles
+
+#Strategi dan base station value
+global isKickOff
+global isRobotCariBola
+global isRobotTungguRobotLain
+global isRobotCariGawang
 
 #Gyro calibration sesuaikan dengan sudut gyro saat menghadap gawang
 gyroCalibration = 0
 
 global ser
+
+HOST = '192.168.43.118'
+PORT = 28097
+
+networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+networkserial.connect((HOST, PORT))
 
 def detect(save_img=False):
     out, source, weights, view_img, save_txt, imgsz = \
@@ -35,6 +48,20 @@ def detect(save_img=False):
     maxXLapangan = 450
     maxYLapangan = 600
     splitSizeGrid = 50
+
+    global isKickOff
+    global isRobotCariBola
+    global isRobotTungguRobotLain
+    global isRobotCariGawang
+
+    isKickOff = False
+    #R1 DEFAULT SET CARI BOLA
+    isRobotCariBola = False
+    #R2 DEFAULT SET TUNGGU ROBOT LAIN
+    isRobotTungguRobotLain = False
+    #R1 KALAU SUDAH OPER KE R2 CARI GAWANG
+    isRobotCariGawang = False
+
 
     global myCoordX
     global myCoordY
@@ -263,6 +290,22 @@ def detect(save_img=False):
                                 if(not isEndpointInit):
                                     end = None
                                     isEndpointInit = True
+
+                        elif (object['label'] == 'robot'):
+                            if (isBawaBola):
+                                # Cari gawang
+                                print('AKU NYARI TEMENKU DIMANA', object)
+                                end = {}
+                                end['x'] = object['x']
+                                end['y'] = object['y']
+                                isEndpointInit = True
+                                tetaBall = object['tetaObj']
+                                realDistanceX = object['realDistanceX']
+                                realDistanceY = object['realDistanceY']
+                            else:
+                                if (not isEndpointInit):
+                                    end = None
+                                    isEndpointInit = True
                         elif(object['label'] == 'obstacle'):
                             print('ADA OBSTACLE', object)
                             obstacle = {}
@@ -392,12 +435,18 @@ def detect(save_img=False):
                 # print('ROBOT AKAN PERGI KE REAL COORD X', newCoordX)
                 # print('ROBOT AKAN PERGI KE REAL COORD Y', newCoordY)
 
-                msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) + "#"
                 # msg = "*0,1250,0#"
 
-                print('msg for PID', msg)
                 # ser.open()
-                ser.write(msg.encode())
+                print('isKickOff',isKickOff)
+                if(isKickOff):
+                    msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) + "#"
+                    print('msg for PID', msg)
+                    ser.write(msg.encode())
+                else:
+                    msg = "*0,0,0#"
+                    ser.write(msg.encode())
+
                 # pidRobot(tetaBall, newCoordX, newCoordY, ser)
 
                 print('REAL LOCATION x : ',myCoordX,'  y :',myCoordY, 'tetaball',tetaBall)
@@ -446,6 +495,46 @@ def detect(save_img=False):
             os.system('open ' + save_path)
 
     print('Done. (%.3fs)' % (time.time() - t0))
+
+def perintahRobot(command):
+    global isKickOff
+    if(command=='K'):
+        isKickOff = True
+    if(command=='r'):
+        isKickOff = False
+
+def updateBaseData():
+    x1 = myCoordLapanganX
+    y1 = myCoordLapanganY
+    teta1 = myGyro - gyroCalibration
+    obsX1 = 137.00
+    obsY1 = 100.00
+    obsX2 = 120.00
+    obsY2 = 130.00
+    bolaX = 5.0
+    bolaY = 6.0
+    while(True):
+        sendDataToBase(x1, y1, teta1, obsX1, obsY1, obsX2, obsY2, bolaX, bolaY)
+
+def updateLocalDataFromBase():
+    xRobot2 = 0.00
+    yRobot2 = 0.00
+    tetaRobot2 = 90.00
+    while(True):
+        receiveDataFromBase(xRobot2, yRobot2, tetaRobot2)
+
+def sendDataToBase(x1, y1, teta1, obsX1, obsY1, obsX2, obsY2, bolaX, bolaY):
+    msg = "*"+repr(x1)+","+repr(y1)+","+repr(teta1)+","+repr(obsX1)+","+\
+          repr(obsY1)+","+repr(obsX2)+","+repr(obsY2)+","+repr(bolaX)+","+repr(bolaY)+"#"
+    print('DATA SENT TO BASE : ',msg)
+    networkserial.send(msg.encode())
+
+def receiveDataFromBase(xRobot2, yRobot2, tetaRobot2):
+    data = networkserial.recv(4096)
+    data = data.decode("utf-8")
+    print('data DARI BASE STATION',data)
+    if(data):
+        perintahRobot(data)
 
 def readSerialData():
     sendSerialMode = True
@@ -529,13 +618,29 @@ def readSerialData():
             s.send('kontrol')
 
 def runMultiThread():
+    # t1 = threading.Thread(target=detect)
+    # t2 = threading.Thread(target=readSerialData)
+    #
+    # t1.start()
+    # t2.start()
+    #
+    # t1.join()
+    # t2.join()
+
     t1 = threading.Thread(target=detect)
     t2 = threading.Thread(target=readSerialData)
+    t3 = threading.Thread(target=updateBaseData)
+    t4 = threading.Thread(target=updateLocalDataFromBase)
 
     t1.start()
     t2.start()
+    t3.start()
+    t4.start()
+
     t1.join()
     t2.join()
+    t3.join()
+    t4.join()
 
 
 if __name__ == '__main__':

@@ -3,22 +3,8 @@ import socket, threading
 HOST = '192.168.43.118'
 PORT = 28097
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
-
-# while(True):
-#     arr = ([1,2,3,4,5,6,7,8,9])
-#     data_string = pickle.dumps(arr)
-#     print("SENDING DATA")
-#     print("SENDING DATA",data_string)
-#     s.send(data_string)
-#
-#     data = s.recv(4096)
-#     print("RECEIVING DATA")
-#     print(data)
-    # data_arr = pickle.loads(data)
-    # s.close()
-    # print('Received', repr(data_arr))
+networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+networkserial.connect((HOST, PORT))
 
 def updateBaseData():
     x1 = 1.111
@@ -44,10 +30,10 @@ def sendDataToBase(x1, y1, teta1, obsX1, obsY1, obsX2, obsY2, bolaX, bolaY):
     msg = "*"+repr(x1)+","+repr(y1)+","+repr(teta1)+","+repr(obsX1)+","+\
           repr(obsY1)+","+repr(obsX2)+","+repr(obsY2)+","+repr(bolaX)+","+repr(bolaY)+"#"
     print('DATA SENT : ',msg)
-    s.send(msg.encode())
+    networkserial.send(msg.encode())
 
 def receiveDataFromBase(xRobot2, yRobot2, tetaRobot2):
-    data = s.recv(4096)
+    data = networkserial.recv(4096)
     print('DATA RECEIVED : ',data)
 
 
