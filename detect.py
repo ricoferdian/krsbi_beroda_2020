@@ -514,6 +514,8 @@ def updateBaseData():
     # global myRes
     global myGyro
     global obstacles
+    if(not myGyro):
+        myGyro = 0
 
     x1 = myCoordLapanganX
     y1 = myCoordLapanganY
