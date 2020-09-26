@@ -504,6 +504,16 @@ def perintahRobot(command):
         isKickOff = False
 
 def updateBaseData():
+    global myCoordX
+    global myCoordY
+    global myCoordLapanganX
+    global myCoordLapanganY
+    global bolaLastSeenX
+    global bolaLastSeenY
+    # global myRes
+    global myGyro
+    global obstacles
+
     x1 = myCoordLapanganX
     y1 = myCoordLapanganY
     teta1 = myGyro - gyroCalibration
@@ -511,8 +521,8 @@ def updateBaseData():
     obsY1 = 100.00
     obsX2 = 120.00
     obsY2 = 130.00
-    bolaX = 5.0
-    bolaY = 6.0
+    bolaX = bolaLastSeenX
+    bolaY = bolaLastSeenY
     while(True):
         sendDataToBase(x1, y1, teta1, obsX1, obsY1, obsX2, obsY2, bolaX, bolaY)
 
