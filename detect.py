@@ -33,7 +33,7 @@ gyroCalibration = 0
 
 global ser
 
-HOST = '192.168.43.118'
+HOST = '192.168.43.110'
 PORT = 28097
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
