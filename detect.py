@@ -27,6 +27,7 @@ global isKickOff
 global isRobotCariBola
 global isRobotTungguRobotLain
 global isRobotCariGawang
+global isDribblingBola
 
 #Gyro calibration sesuaikan dengan sudut gyro saat menghadap gawang
 gyroCalibration = 0
@@ -568,8 +569,10 @@ def readSerialData():
 
     global myCoordLapanganX
     global myCoordLapanganY
+    global isDribblingBola
     myCoordLapanganX = 0
     myCoordLapanganY = 0
+    isDribblingBola = 0
 
     global myRes
     global myGyro
@@ -592,6 +595,7 @@ def readSerialData():
                     myCoordX = xyresgyro[0]
                     myCoordY = xyresgyro[1]
                     myGyro = xyresgyro[2]
+                    isDribblingBola = xyresgyro[3]
                     #myCoordY = depan robot. Terkalibrasi sebagai x positif di lapangan (menghadap gawang = 0 derajat)
                     #myCoordX = kanan robot. Terkalibrasi sebagai y positif di lapangan (menghadap kanan gawang = 90 derajat)
                     robotCoordX, robotCoordY = rotateMatrix(myCoordY,myCoordX,myGyro - gyroCalibration)
