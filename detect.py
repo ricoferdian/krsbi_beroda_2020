@@ -585,7 +585,7 @@ def readSerialData():
     i = 0
 
     global ser
-    ser = serial.Serial('COM5', 115200, timeout=100000)
+    ser = serial.Serial('COM8', 115200, timeout=100000)
 
     global myCoordX
     global myCoordY
