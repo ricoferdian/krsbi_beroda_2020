@@ -298,6 +298,16 @@ def detect(save_img=False):
                                 realDistanceY = object['realDistanceY']
                                 #JIKA GAWANG DEKAT, TENDANG
                                 if(realDistanceY<400):
+                                    print('TENDANG BOLANYAAAAAA')
+                                    print('TENDANG BOLANYAAAAAA')
+                                    print('TENDANG BOLANYAAAAAA')
+                                    print('TENDANG BOLANYAAAAAA')
+                                    print('TENDANG BOLANYAAAAAA')
+                                    print('TENDANG BOLANYAAAAAA')
+                                    print('TENDANG BOLANYAAAAAA')
+                                    print('TENDANG BOLANYAAAAAA')
+                                    print('TENDANG BOLANYAAAAAA')
+                                    print('TENDANG BOLANYAAAAAA')
                                     isTendangBola = True
                                     isDribblingBola = False
                             else:
