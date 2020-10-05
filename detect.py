@@ -37,12 +37,12 @@ global ser
 HOST = '192.168.43.110'
 PORT = 28097
 
-networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-networkserial.connect((HOST, PORT))
+# networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# networkserial.connect((HOST, PORT))
 
 def detect(save_img=False):
     out, source, weights, view_img, save_txt, imgsz = \
-        'inference/output', '1', 'D:\\Libraries\\Project\\Python\\yolov5\\runs\\exp8\\weights\\best.pt', None, None, 640
+        'inference/output', '0', 'D:\\Libraries\\Project\\Python\\yolov5\\runs\\exp8\\weights\\best.pt', None, None, 640
     webcam = source == '0' or source == '1' or source.startswith('rtsp') or source.startswith(
         'http') or source.endswith('.txt')
 
@@ -211,7 +211,6 @@ def detect(save_img=False):
                                         'x2': int(xyxy[2]), 'y2': int(xyxy[3])})
                 arr_objects = getcoordinate(arr_objects)
                 # print('arr_objects',arr_objects)
-                isDribblingBola = False
                 isNemuBola = False
                 start = {}
                 end = {}
@@ -278,7 +277,8 @@ def detect(save_img=False):
                                 realDistanceY = object['realDistanceY']
                                 if(not isEndpointInit):
                                     isEndpointInit = True
-                                if(realDistanceY<100):
+                                if(realDistanceY<140):
+                                    print('BOLA SUDAH DEKAT')
                                     isBolaDekat = True
                                 #Cari bola
                             else:
@@ -296,6 +296,7 @@ def detect(save_img=False):
                                 tetaBall = object['tetaObj']
                                 realDistanceX = object['realDistanceX']
                                 realDistanceY = object['realDistanceY']
+                                #JIKA GAWANG DEKAT, TENDANG
                                 if(realDistanceY<200):
                                     isTendangBola = True
                                     isDribblingBola = False
@@ -354,6 +355,10 @@ def detect(save_img=False):
 
                 start['x'] = myCoordLapanganX
                 start['y'] = myCoordLapanganY
+
+                print('isDribblingBola : ',isDribblingBola)
+                if (isDribblingBola):
+                    isBolaDekat = True
 
                 paths = []
                 print('start',start)
@@ -576,11 +581,11 @@ def readSerialData():
 
     _serDeclare = True
     readdata = ''
-    xyresgyro = [0 for i in range(6)]
+    xyresgyro = [0 for i in range(4)]
     i = 0
 
     global ser
-    ser = serial.Serial('COM4', 115200, timeout=100000)
+    ser = serial.Serial('COM5', 115200, timeout=100000)
 
     global myCoordX
     global myCoordY
@@ -590,11 +595,13 @@ def readSerialData():
     global isDribblingBola
     myCoordLapanganX = 0
     myCoordLapanganY = 0
-    isDribblingBola = 0
+    isDribblingBola = False
 
     global myRes
     global myGyro
+    global isKickOff
     while (True):
+        isKickOff = True
         # print sendSerialMode
         if sendSerialMode == True:
             if sendSerialMode == True:
@@ -613,7 +620,13 @@ def readSerialData():
                     myCoordX = xyresgyro[0]
                     myCoordY = xyresgyro[1]
                     myGyro = xyresgyro[2]
-                    isDribblingBola = xyresgyro[3]
+                    dribblingBola = xyresgyro[3]
+                    if(dribblingBola==1):
+                        isDribblingBola = True
+                    else:
+                        isDribblingBola = False
+
+                    print('isDribblingBola : ', isDribblingBola)
                     #myCoordY = depan robot. Terkalibrasi sebagai x positif di lapangan (menghadap gawang = 0 derajat)
                     #myCoordX = kanan robot. Terkalibrasi sebagai y positif di lapangan (menghadap kanan gawang = 90 derajat)
                     robotCoordX, robotCoordY = rotateMatrix(myCoordY,myCoordX,myGyro - gyroCalibration)
@@ -647,18 +660,18 @@ def readSerialData():
 def runMultiThread():
     t1 = threading.Thread(target=detect)
     t2 = threading.Thread(target=readSerialData)
-    t3 = threading.Thread(target=updateBaseData)
-    t4 = threading.Thread(target=updateLocalDataFromBase)
+    # t3 = threading.Thread(target=updateBaseData)
+    # t4 = threading.Thread(target=updateLocalDataFromBase)
 
     t1.start()
     t2.start()
-    t3.start()
-    t4.start()
+    # t3.start()
+    # t4.start()
 
     t1.join()
     t2.join()
-    t3.join()
-    t4.join()
+    # t3.join()
+    # t4.join()
 
 
 if __name__ == '__main__':
