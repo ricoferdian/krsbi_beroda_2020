@@ -321,7 +321,6 @@ def detect(save_img=False):
                                     print('TENDANG BOLANYAAAAAA')
                                     print('TENDANG BOLANYAAAAAA')
                                     isTendangBola = True
-                                    isDribblingBola = False
                             else:
                                 if(not isEndpointInit):
                                     end = None
