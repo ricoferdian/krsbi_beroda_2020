@@ -117,8 +117,6 @@ def detect(save_img=False):
         [1, 1, 1, 1, 1, 1, 1, 1, 1],
     ]
 
-    counterBolaDekat = 0
-
     # Initialize
     device = torch_utils.select_device(opt.device)
     if os.path.exists(out):
@@ -252,15 +250,6 @@ def detect(save_img=False):
                 ]
 
                 isTendangBola = False
-                if(counterBolaDekat!=0):
-                    counterBolaDekat +=1
-                    if(counterBolaDekat==30):
-                        isBolaDekat = False
-                        counterBolaDekat = 0
-                    else:
-                        isBolaDekat = True
-                else:
-                    isBolaDekat = False
 
                 if(len(arr_objects)>0):
                     for object in arr_objects:
@@ -291,8 +280,6 @@ def detect(save_img=False):
                                 if(realDistanceY<140):
                                     print('BOLA SUDAH DEKAT')
                                     isBolaDekat = True
-                                    counterBolaDekat = 1
-                                #Cari bola
                             else:
                                 if(not isEndpointInit):
                                     end = None
@@ -310,13 +297,6 @@ def detect(save_img=False):
                                 realDistanceY = object['realDistanceY']
                                 #JIKA GAWANG DEKAT, TENDANG
                                 if(realDistanceY<400):
-                                    print('TENDANG BOLANYAAAAAA')
-                                    print('TENDANG BOLANYAAAAAA')
-                                    print('TENDANG BOLANYAAAAAA')
-                                    print('TENDANG BOLANYAAAAAA')
-                                    print('TENDANG BOLANYAAAAAA')
-                                    print('TENDANG BOLANYAAAAAA')
-                                    print('TENDANG BOLANYAAAAAA')
                                     print('TENDANG BOLANYAAAAAA')
                                     print('TENDANG BOLANYAAAAAA')
                                     print('TENDANG BOLANYAAAAAA')
