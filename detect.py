@@ -258,6 +258,7 @@ def detect(save_img=False):
                 ]
 
                 isTendangBola = False
+                isBolaDekat = False
 
                 if(len(arr_objects)>0):
                     for object in arr_objects:
