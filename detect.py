@@ -305,7 +305,7 @@ def detect(save_img=False):
                                 realDistanceX = object['realDistanceX']
                                 realDistanceY = object['realDistanceY']
                                 #JIKA GAWANG DEKAT, TENDANG
-                                if(realDistanceY<500):
+                                if(realDistanceY<400):
                                     print('TENDANG BOLANYAAAAAA')
                                     print('TENDANG BOLANYAAAAAA')
                                     print('TENDANG BOLANYAAAAAA')
@@ -467,7 +467,8 @@ def detect(save_img=False):
                         isBolaDekat = 1
                     else:
                         isBolaDekat = 0
-                    if(isTendangBola):
+                    #TENDANG BOLA DAN JIKA SUDAH MENGHADAP GAWANG
+                    if(isTendangBola and (tetaBall<5 and tetaBall>-5)):
                         isTendangBola = 1
                         isKickOff = False
                         print('TENDANG BOLA!!!')
