@@ -50,7 +50,7 @@ def detect(save_img=False):
 
     #ROBOT 1
     out, source, weights, view_img, save_txt, imgsz = \
-        'inference/output', '1', 'C:\\Libraries\\Project\\Python\\yolov5\\runs\\exp8\\weights\\best.pt', None, None, 640
+        'inference/output', '1', 'D\:\\Libraries\\Project\\Python\\yolov5\\runs\\exp8\\weights\\best.pt', None, None, 640
     webcam = source == '0' or source == '1' or source.startswith('rtsp') or source.startswith(
         'http') or source.endswith('.txt')
 
