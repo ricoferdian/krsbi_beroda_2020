@@ -589,7 +589,10 @@ def readSerialData():
     i = 0
 
     global ser
-    ser = serial.Serial('COM8', 115200, timeout=100000)
+    #robot 2
+    # ser = serial.Serial('COM3', 115200, timeout=100000)
+    #robot 1
+    ser = serial.Serial('COM3', 115200, timeout=100000)
 
     global myCoordX
     global myCoordY
