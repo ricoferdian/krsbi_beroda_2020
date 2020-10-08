@@ -146,6 +146,9 @@ class LoadImages:  # for inference
     def new_video(self, path):
         self.frame = 0
         self.cap = cv2.VideoCapture(path)
+        self.cap.set(13, 13)
+        self.cap.set(14, 50)
+        self.cap.set(28, 0)
         self.nframes = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
     def __len__(self):
@@ -172,6 +175,9 @@ class LoadWebcam:  # for inference
 
         self.pipe = pipe
         self.cap = cv2.VideoCapture(pipe)  # video capture object
+        self.cap.set(13, 13)
+        self.cap.set(14, 50)
+        self.cap.set(28, 0)
         self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 3)  # set buffer size
 
     def __iter__(self):
@@ -241,6 +247,9 @@ class LoadStreams:  # multiple IP or RTSP cameras
             else:
                 sr = s
             cap = cv2.VideoCapture(sr)
+            cap.set(13, 13)
+            cap.set(14, 50)
+            cap.set(28, 0)
             assert cap.isOpened(), 'Failed to open %s' % s
             w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
             h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))

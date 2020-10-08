@@ -29,10 +29,11 @@ global isRobotTungguRobotLain
 global isRobotCariGawang
 global isDribblingBola
 
+#Serial port Arduino
+global ser
+
 #Gyro calibration sesuaikan dengan sudut gyro saat menghadap gawang
 gyroCalibration = 0
-
-global ser
 
 HOST = '192.168.43.110'
 PORT = 28097
@@ -66,7 +67,6 @@ def detect(save_img=False):
 
     isDribblingBola = False
 
-
     global myCoordX
     global myCoordY
     global bolaLastSeenX
@@ -75,6 +75,7 @@ def detect(save_img=False):
     myCoordY = 0
     bolaLastSeenX = 0
     bolaLastSeenY = 0
+
     global myCoordLapanganX
     global myCoordLapanganY
 

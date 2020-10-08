@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 
 
-# Swish ------------------------------------------------------------------------
+# Swish --------------------------------------F----------------------------------
 class SwishImplementation(torch.autograd.Function):
     @staticmethod
     def forward(ctx, x):
