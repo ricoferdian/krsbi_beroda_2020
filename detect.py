@@ -480,35 +480,32 @@ def detect(save_img=False):
                     else:
                         isTendangBola = 0
 
-                    isTranslasi = 0
-                    isRotasi = 0
-
                     if(robotId==1):
                         if(strategyState==1):
                             if(newCoordX<20 and newCoordX>-20):
                                 newCoordY = newCoordY
                             else:
                                 newCoordY = 0
-                            tetaBall = myGyro
+                            tetaBall = -myGyro
                         elif(strategyState==3):
                             if(newCoordX<20 and newCoordX>-20):
                                 newCoordY = newCoordY
                             else:
                                 newCoordY = 0
-                            tetaBall = myGyro
+                            tetaBall = -myGyro
                     else:
                         if(strategyState==1):
                             if(newCoordX<20 and newCoordX>-20):
                                 newCoordY = newCoordY
                             else:
                                 newCoordY = 0
-                            tetaBall = myGyro
+                            tetaBall = -myGyro
                         elif(strategyState==6):
                             if(newCoordX<20 and newCoordX>-20):
                                 newCoordY = newCoordY
                             else:
                                 newCoordY = 0
-                            tetaBall = myGyro
+                            tetaBall = -myGyro
 
                     msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat)+ "," + repr(0) + "#"
                     print('msg for PID', msg)
