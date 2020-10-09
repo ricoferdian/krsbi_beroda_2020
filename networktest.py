@@ -15,7 +15,7 @@ def updateBaseData():
     bolaLastSeenX = 0
     bolaLastSeenY = 0
     myGyro = 0
-    strategyState = 8
+    strategyState = 3
 
     x1 = myCoordLapanganX
     y1 = myCoordLapanganY
@@ -41,6 +41,31 @@ def sendDataToBase(x1, y1, teta1, bolaX, bolaY, strategyStatus):
 def receiveDataFromBase(xRobot2, yRobot2, tetaRobot2):
     data = networkserial.recv(4096)
     print('DATA RECEIVED : ',data)
+    if(data):
+        perintahRobot(data)
+
+def perintahRobot(command):
+    global isKickOff
+    if(command=='K'):
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        isKickOff = True
+    elif(command=='r'):
+        isKickOff = False
+    elif(command[0]=='*'):
+        print('COMMAND : ',command)
 
 def runServerThread():
     t3 = threading.Thread(target=updateBaseData)
