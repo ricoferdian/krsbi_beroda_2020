@@ -5,7 +5,7 @@ cameraCenterX = 343
 cameraCenterY = 238
 
 # #ROBOT 1
-cameraCenterX = 295
+# cameraCenterX = 295
 # cameraCenterY = 248
 
 def getcoordinate(arr_objects):
