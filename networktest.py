@@ -1,7 +1,10 @@
 import socket, threading
 
-HOST = '192.168.43.80'
-PORT = 28097
+HOST = '192.168.43.118'
+# LAPTOP DEK JUN
+# PORT = 28097
+# LAPTOP UCUP
+PORT = 5204
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))

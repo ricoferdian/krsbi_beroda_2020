@@ -32,7 +32,7 @@ global ser
 #Gyro calibration sesuaikan dengan sudut gyro saat menghadap gawang
 gyroCalibration = 0
 
-HOST = '192.168.43.118'
+HOST = '192.168.43.20'
 # LAPTOP DEK JUN
 # PORT = 28097
 # LAPTOP UCUP
