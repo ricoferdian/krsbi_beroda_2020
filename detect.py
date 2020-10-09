@@ -74,6 +74,7 @@ def detect(save_img=False):
     global myCoordY
     global bolaLastSeenX
     global bolaLastSeenX
+    global myGyro
     myCoordX = 0
     myCoordY = 0
     bolaLastSeenX = 0
@@ -625,7 +626,6 @@ def readSerialData():
     myCoordLapanganY = 0
     isDribblingBola = False
 
-    global myRes
     global myGyro
     myGyro = 0
     global isKickOff
