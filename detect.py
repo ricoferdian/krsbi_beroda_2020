@@ -37,9 +37,11 @@ HOST = '192.168.43.61'
 # LAPTOP UCUP
 # PORT = 28097
 # arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
+# robotId = 1
 # LAPTOP DEK JUN
 PORT = 5204
 arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
+robotId = 2
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
@@ -294,8 +296,11 @@ def detect(save_img=False):
                                 realDistanceX = object['realDistanceX']
                                 realDistanceY = object['realDistanceY']
                                 #JIKA GAWANG DEKAT, TENDANG
-                                if(isDribblingBola and realDistanceY<330):
+                                if(isDribblingBola and realDistanceY<400):
                                     isTendangBola = True
+                                elif(strategyState==arrayStrategy[7] and not isDribblingBola):
+                                    strategyState = 6
+
                             else:
                                 if(not isEndpointInit):
                                     end = None
@@ -475,12 +480,54 @@ def detect(save_img=False):
                     else:
                         isTendangBola = 0
 
-                    msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat) + "," + repr(0) +"," + repr(0) +"," + repr(0) + "#"
+                    isTranslasi = 0
+                    isRotasi = 0
+
+                    if(robotId==1):
+                        if(strategyState==1):
+                            isTranslasi = 1
+                            isRotasi = 0
+                        elif(strategyState==2):
+                            isTranslasi = 0
+                            isRotasi = 1
+                        elif(strategyState==3):
+                            isTranslasi = 1
+                            isRotasi = 0
+                        elif(strategyState==5):
+                            isTranslasi = 0
+                            isRotasi = 1
+                        elif(strategyState==6):
+                            isTranslasi = 0
+                            isRotasi = 1
+                        elif(strategyState==7):
+                            isTranslasi = 0
+                            isRotasi = 1
+                    else:
+                        if(strategyState==1):
+                            isTranslasi = 1
+                            isRotasi = 0
+                        elif(strategyState==2):
+                            isTranslasi = 0
+                            isRotasi = 1
+                        elif(strategyState==3):
+                            isTranslasi = 0
+                            isRotasi = 1
+                        elif(strategyState==5):
+                            isTranslasi = 0
+                            isRotasi = 1
+                        elif(strategyState==6):
+                            isTranslasi = 1
+                            isRotasi = 0
+                        elif(strategyState==7):
+                            isTranslasi = 0
+                            isRotasi = 1
+
+                    msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat) + "," + repr(isTranslasi) +"," + repr(isRotasi) +"," + repr(0) + "#"
                     print('msg for PID', msg)
                     ser.write(msg.encode())
                 else:
                     strategyState = 1
-                    msg = "*0,0,0,0,0#"
+                    msg = "*0,0,0,0,0,0,0,1#"
                     ser.write(msg.encode())
 
                 # pidRobot(tetaBall, newCoordX, newCoordY, ser)
