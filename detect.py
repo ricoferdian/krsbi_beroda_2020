@@ -35,13 +35,13 @@ gyroCalibration = 0
 
 HOST = '192.168.43.61'
 # LAPTOP UCUP
-# PORT = 28097
-# arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
-# robotId = 1
+PORT = 28097
+arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
+robotId = 1
 # LAPTOP DEK JUN
-PORT = 5204
-arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
-robotId = 2
+# PORT = 5204
+# arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
+# robotId = 2
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
@@ -485,14 +485,16 @@ def detect(save_img=False):
 
                     if(robotId==1):
                         if(strategyState==1):
-                            newCoordY = 0
+                            if(not newCoordX<20 or not newCoordX>-20):
+                                newCoordY = 0
                             isTranslasi = 1
                             isRotasi = 0
                         elif(strategyState==2):
                             isTranslasi = 0
                             isRotasi = 1
                         elif(strategyState==3):
-                            newCoordY = 0
+                            if(not newCoordX<20 or not newCoordX>-20):
+                                newCoordY = 0
                             isTranslasi = 1
                             isRotasi = 0
                         elif(strategyState==5):
@@ -506,7 +508,8 @@ def detect(save_img=False):
                             isRotasi = 1
                     else:
                         if(strategyState==1):
-                            newCoordY = 0
+                            if(not newCoordX<20 or not newCoordX>-20):
+                                newCoordY = 0
                             isTranslasi = 1
                             isRotasi = 0
                         elif(strategyState==2):
@@ -519,7 +522,8 @@ def detect(save_img=False):
                             isTranslasi = 0
                             isRotasi = 1
                         elif(strategyState==6):
-                            newCoordY = 0
+                            if(not newCoordX<20 or not newCoordX>-20):
+                                newCoordY = 0
                             isTranslasi = 1
                             isRotasi = 0
                         elif(strategyState==7):
