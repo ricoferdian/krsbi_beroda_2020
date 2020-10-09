@@ -35,13 +35,13 @@ gyroCalibration = 0
 
 HOST = '192.168.43.61'
 # LAPTOP UCUP
-PORT = 28097
-arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
-robotId = 1
+# PORT = 28097
+# arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
+# robotId = 1
 # LAPTOP DEK JUN
-# PORT = 5204
-# arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
-# robotId = 2
+PORT = 5204
+arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
+robotId = 2
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
@@ -497,7 +497,7 @@ def detect(save_img=False):
                                 newCoordY = 0
                                 newCoordX = -180
                                 tetaBall = -myGyro
-                            if(myCoordY<100):
+                            elif(myCoordY<100):
                                 newCoordY = 100
                                 newCoordX = 0
                         elif(strategyState==6):
