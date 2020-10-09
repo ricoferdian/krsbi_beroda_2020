@@ -34,7 +34,11 @@ global ser
 gyroCalibration = 0
 
 HOST = '192.168.43.80'
-PORT = 28097
+#LAPTOP UCUP
+# PORT = 28097
+
+#ROBOT 2 (LAPTOP DEK JUN)
+PORT = 5204
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
@@ -278,7 +282,7 @@ def detect(save_img=False):
                                 realDistanceY = object['realDistanceY']
                                 if(not isEndpointInit):
                                     isEndpointInit = True
-                                if(realDistanceY<140):
+                                if(realDistanceY<150):
                                     print('BOLA SUDAH DEKAT')
                                     isBolaDekat = True
                             else:
