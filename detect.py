@@ -475,6 +475,7 @@ def detect(save_img=False):
                     print('msg for PID', msg)
                     ser.write(msg.encode())
                 else:
+                    strategyState = 0
                     msg = "*0,0,0,0,0#"
                     ser.write(msg.encode())
 
