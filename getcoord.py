@@ -1,8 +1,8 @@
 from helper_new import *
 
 # LAPTOP UCUP
-cameraCenterX = 343
-cameraCenterY = 238
+# cameraCenterX = 343
+# cameraCenterY = 238
 
 # LAPTOP DEK JUN
 cameraCenterX = 295
