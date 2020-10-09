@@ -484,22 +484,26 @@ def detect(save_img=False):
                         if(strategyState==1):
                             if(myCoordX<200):
                                 newCoordY = 0
-                                newCoordX = 200
+                                newCoordX = 180
                                 tetaBall = -myGyro
                         elif(strategyState==3):
                             if(myCoordX>0):
                                 newCoordY = 0
-                                newCoordX = 200
+                                newCoordX = -180
                                 tetaBall = -myGyro
                     else:
                         if(strategyState==1):
                             if(myCoordX>-200):
                                 newCoordY = 0
-                                newCoordX = 200
+                                newCoordX = -180
                                 tetaBall = -myGyro
+                            if(myCoordY<100):
+                                newCoordY = 100
+                                newCoordX = 0
                         elif(strategyState==6):
                             if(myCoordX<0):
                                 newCoordY = 0
+                                newCoordX = 180
                                 tetaBall = -myGyro
 
                     msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat)+ "," + repr(0) + "#"
