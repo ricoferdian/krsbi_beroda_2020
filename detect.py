@@ -462,8 +462,6 @@ def detect(save_img=False):
                     #TENDANG BOLA DAN JIKA SUDAH MENGHADAP GAWANG
                     if(isTendangBola and (tetaBall<10 and tetaBall>-10)):
                         isTendangBola = 1
-                        isKickOff = False
-                        print('TENDANG BOLA!!!')
                     else:
                         isTendangBola = 0
 
