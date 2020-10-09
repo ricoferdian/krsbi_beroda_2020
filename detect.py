@@ -296,7 +296,7 @@ def detect(save_img=False):
                                 realDistanceX = object['realDistanceX']
                                 realDistanceY = object['realDistanceY']
                                 #JIKA GAWANG DEKAT, TENDANG
-                                if(isDribblingBola and realDistanceY<400):
+                                if(isDribblingBola and realDistanceY<450):
                                     isTendangBola = True
                                 elif(strategyState==arrayStrategy[7] and not isDribblingBola):
                                     strategyState = 6
@@ -485,12 +485,14 @@ def detect(save_img=False):
 
                     if(robotId==1):
                         if(strategyState==1):
+                            newCoordY = 0
                             isTranslasi = 1
                             isRotasi = 0
                         elif(strategyState==2):
                             isTranslasi = 0
                             isRotasi = 1
                         elif(strategyState==3):
+                            newCoordY = 0
                             isTranslasi = 1
                             isRotasi = 0
                         elif(strategyState==5):
@@ -504,6 +506,7 @@ def detect(save_img=False):
                             isRotasi = 1
                     else:
                         if(strategyState==1):
+                            newCoordY = 0
                             isTranslasi = 1
                             isRotasi = 0
                         elif(strategyState==2):
@@ -516,6 +519,7 @@ def detect(save_img=False):
                             isTranslasi = 0
                             isRotasi = 1
                         elif(strategyState==6):
+                            newCoordY = 0
                             isTranslasi = 1
                             isRotasi = 0
                         elif(strategyState==7):
