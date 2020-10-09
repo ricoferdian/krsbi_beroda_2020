@@ -482,20 +482,20 @@ def detect(save_img=False):
 
                     if(robotId==1):
                         if(strategyState==1):
-                            if(newCoordX>20 and newCoordX<-20):
+                            if(myCoordX!=200):
                                 newCoordY = 0
                                 tetaBall = -myGyro
                         elif(strategyState==3):
-                            if(newCoordX>20 and newCoordX<-20):
+                            if(myCoordX!=-200):
                                 newCoordY = 0
                                 tetaBall = -myGyro
                     else:
                         if(strategyState==1):
-                            if(newCoordX>20 and newCoordX<-20):
+                            if(myCoordX!=-200):
                                 newCoordY = 0
                                 tetaBall = -myGyro
                         elif(strategyState==6):
-                            if(newCoordX>20 and newCoordX<-20):
+                            if(myCoordX!=200):
                                 newCoordY = 0
                                 tetaBall = -myGyro
 
