@@ -34,11 +34,11 @@ gyroCalibration = 0
 
 HOST = '192.168.43.61'
 # LAPTOP UCUP
-PORT = 28097
-arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
+# PORT = 28097
+# arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
 # LAPTOP DEK JUN
-# PORT = 5204
-# arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
+PORT = 5204
+arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
@@ -562,6 +562,42 @@ def parseCommand(command):
             readdata += command[commandIndex]
         commandIndex += 1
     newStrategyState = xystrategy[7]
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
+    print('newStrategyState',newStrategyState)
     if(newStrategyState>strategyState):
         strategyState = newStrategyState
 
