@@ -526,6 +526,20 @@ def detect(save_img=False):
 def perintahRobot(command):
     global isKickOff
     if(command=='K'):
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
+        print('KICKOFF!!!!!')
         isKickOff = True
     if(command=='r'):
         isKickOff = False
@@ -608,7 +622,6 @@ def readSerialData():
     global myRes
     global myGyro
     global isKickOff
-    isKickOff = False
     while (True):
         # print sendSerialMode
         if sendSerialMode == True:
