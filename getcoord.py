@@ -1,10 +1,10 @@
 from helper_new import *
 
-# ROBOT 2
+# LAPTOP UCUP
 # cameraCenterX = 343
 # cameraCenterY = 238
 
-# #ROBOT 1
+# LAPTOP DEK JUN
 cameraCenterX = 295
 cameraCenterY = 248
 

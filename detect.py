@@ -34,23 +34,15 @@ global ser
 gyroCalibration = 0
 
 HOST = '192.168.43.80'
-#LAPTOP UCUP
+# LAPTOP UCUP
 # PORT = 28097
-
-#ROBOT 2 (LAPTOP DEK JUN)
+# LAPTOP DEK JUN
 PORT = 5204
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
 
 def detect(save_img=False):
-    #ROBOT 2
-    # out, source, weights, view_img, save_txt, imgsz = \
-    #     'inference/output', '1', 'D:\\Libraries\\Project\\Python\\yolov5\\runs\\exp8\\weights\\best.pt', None, None, 640
-    # webcam = source == '0' or source == '1' or source.startswith('rtsp') or source.startswith(
-    #     'http') or source.endswith('.txt')
-
-    #ROBOT 1
     out, source, weights, view_img, save_txt, imgsz = \
         'inference/output', '1', 'D:\\Libraries\\Project\\Python\\yolov5\\runs\\exp8\\weights\\best.pt', None, None, 640
     webcam = source == '0' or source == '1' or source.startswith('rtsp') or source.startswith(
