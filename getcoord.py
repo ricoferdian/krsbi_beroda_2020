@@ -1,12 +1,12 @@
 from helper_new import *
 
-# LAPTOP DEK JUN
-# cameraCenterX = 343
-# cameraCenterY = 238
-
 # LAPTOP UCUP
-cameraCenterX = 295
-cameraCenterY = 248
+cameraCenterX = 343
+cameraCenterY = 238
+
+# LAPTOP DEK JUN
+# cameraCenterX = 295
+# cameraCenterY = 248
 
 def getcoordinate(arr_objects):
     for index, object in enumerate(arr_objects):

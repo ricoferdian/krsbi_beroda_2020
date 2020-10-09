@@ -34,11 +34,11 @@ gyroCalibration = 0
 
 HOST = '192.168.43.61'
 # LAPTOP UCUP
-# PORT = 28097
-# arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
+PORT = 28097
+arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
 # LAPTOP DEK JUN
-PORT = 5204
-arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
+# PORT = 5204
+# arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
@@ -274,7 +274,7 @@ def detect(save_img=False):
                                 realDistanceY = object['realDistanceY']
                                 if(not isEndpointInit):
                                     isEndpointInit = True
-                                if(realDistanceY<150):
+                                if(realDistanceY<160):
                                     print('BOLA SUDAH DEKAT')
                                     isBolaDekat = True
                             else:
