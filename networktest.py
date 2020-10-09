@@ -32,7 +32,7 @@ def updateLocalDataFromBase():
 
 def sendDataToBase(x1, y1, teta1, bolaX, bolaY, strategyStatus):
     msg = "*"+repr(x1)+","+repr(y1)+","+repr(teta1)+","+repr(bolaX)+","+repr(bolaY)+","+repr(strategyStatus)+"#"
-    print('DATA SENT TO BASE : ',msg)
+    # print('DATA SENT TO BASE : ',msg)
     networkserial.send(msg.encode())
 
 def receiveDataFromBase(xRobot2, yRobot2, tetaRobot2):
