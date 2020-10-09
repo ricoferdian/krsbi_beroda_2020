@@ -33,7 +33,7 @@ global ser
 #Gyro calibration sesuaikan dengan sudut gyro saat menghadap gawang
 gyroCalibration = 0
 
-HOST = '192.168.43.110'
+HOST = '192.168.43.10'
 PORT = 28097
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
