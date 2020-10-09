@@ -40,12 +40,14 @@ def sendDataToBase(x1, y1, teta1, bolaX, bolaY, strategyStatus):
 
 def receiveDataFromBase(xRobot2, yRobot2, tetaRobot2):
     data = networkserial.recv(4096)
+    data = data.decode("utf-8")
     print('DATA RECEIVED : ',data)
     if(data):
         perintahRobot(data)
 
 def perintahRobot(command):
     global isKickOff
+    print('COMMAND : ',command)
     if(command=='K'):
         print('KICKOFF!!!!!')
         print('KICKOFF!!!!!')
