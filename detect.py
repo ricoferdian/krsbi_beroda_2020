@@ -487,9 +487,9 @@ def detect(save_img=False):
                                 newCoordX = 180
                                 tetaBall = -myGyro
                         elif(strategyState==3):
-                            if(myCoordX>0):
+                            if(myCoordX>80):
                                 newCoordY = 0
-                                newCoordX = -180
+                                newCoordX = -100
                                 tetaBall = -myGyro
                     else:
                         if(strategyState==1):
@@ -497,10 +497,10 @@ def detect(save_img=False):
                                 newCoordY = 0
                                 newCoordX = -180
                                 tetaBall = -myGyro
-                            else:
-                                if(myCoordY<100):
-                                    newCoordY = 100
-                                    newCoordX = 0
+                            # else:
+                            #     if(myCoordY<100):
+                            #         newCoordY = 100
+                            #         newCoordX = 0
                         elif(strategyState==6):
                             if(myCoordX<0):
                                 newCoordY = 0
