@@ -554,13 +554,13 @@ def updateBaseData():
     global myCoordLapanganY
     global bolaLastSeenX
     global bolaLastSeenY
+    global myGyro
     myCoordLapanganX = 0
     myCoordLapanganY = 0
     bolaLastSeenX = 0
     bolaLastSeenY = 0
     myGyro = 0
     # global myRes
-    global myGyro
     global obstacles
 
     x1 = myCoordLapanganX
