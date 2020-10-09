@@ -58,8 +58,6 @@ def detect(save_img=False):
     global isDribblingBola
 
     isKickOff = False
-    #R1 DEFAULT SET CARI BOLA
-    strategyState = 1
 
     isDribblingBola = False
 
@@ -357,9 +355,9 @@ def detect(save_img=False):
                 if (isDribblingBola):
                     if (strategyState == 1):
                         strategyState = 2
-                    if (strategyState == 3):
+                    elif (strategyState == 3):
                         strategyState = 5
-                    if (strategyState == 6):
+                    elif (strategyState == 6):
                         strategyState = 7
                     isBolaDekat = True
 
@@ -474,6 +472,7 @@ def detect(save_img=False):
                     print('msg for PID', msg)
                     ser.write(msg.encode())
                 else:
+                    strategyState = 1
                     msg = "*0,0,0,0,0#"
                     ser.write(msg.encode())
 
