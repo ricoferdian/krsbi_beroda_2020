@@ -35,8 +35,10 @@ gyroCalibration = 0
 HOST = '192.168.43.61'
 # LAPTOP DEK JUN
 PORT = 28097
+arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
 # LAPTOP UCUP
 # PORT = 5204
+# arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
@@ -247,11 +249,6 @@ def detect(save_img=False):
 
                 isTendangBola = False
                 isBolaDekat = False
-
-                #STATE R1
-                arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
-                #STATE R2
-                arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
 
                 if(len(arr_objects)>0):
                     for object in arr_objects:
