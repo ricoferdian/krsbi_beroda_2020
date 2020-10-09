@@ -1,10 +1,10 @@
 from helper_new import *
 
-# LAPTOP UCUP
+# LAPTOP DEK JUN
 # cameraCenterX = 343
 # cameraCenterY = 238
 
-# LAPTOP DEK JUN
+# LAPTOP UCUP
 cameraCenterX = 295
 cameraCenterY = 248
 
