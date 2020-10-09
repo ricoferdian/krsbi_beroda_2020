@@ -7,17 +7,21 @@ networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
 
 def updateBaseData():
-    x1 = 1.111
-    y1 = 2.11
-    teta1 = 90.00
-    obsX1 = 137.00
-    obsY1 = 100.00
-    obsX2 = 120.00
-    obsY2 = 130.00
-    bolaX = 5.0
-    bolaY = 6.0
+    myCoordLapanganX = 0
+    myCoordLapanganY = 0
+    bolaLastSeenX = 0
+    bolaLastSeenY = 0
+    myGyro = 0
+    strategyState = 1
+
+    x1 = myCoordLapanganX
+    y1 = myCoordLapanganY
+    teta1 = myGyro
+    bolaX = bolaLastSeenX
+    bolaY = bolaLastSeenY
+
     while(True):
-        sendDataToBase(x1, y1, teta1, obsX1, obsY1, obsX2, obsY2, bolaX, bolaY)
+        sendDataToBase(x1, y1, teta1, bolaX, bolaY, strategyState)
 
 def updateLocalDataFromBase():
     xRobot2 = 0.00
@@ -26,10 +30,9 @@ def updateLocalDataFromBase():
     while(True):
         receiveDataFromBase(xRobot2, yRobot2, tetaRobot2)
 
-def sendDataToBase(x1, y1, teta1, obsX1, obsY1, obsX2, obsY2, bolaX, bolaY):
-    msg = "*"+repr(x1)+","+repr(y1)+","+repr(teta1)+","+repr(obsX1)+","+\
-          repr(obsY1)+","+repr(obsX2)+","+repr(obsY2)+","+repr(bolaX)+","+repr(bolaY)+"#"
-    print('DATA SENT : ',msg)
+def sendDataToBase(x1, y1, teta1, bolaX, bolaY, strategyStatus):
+    msg = "*"+repr(x1)+","+repr(y1)+","+repr(teta1)+","+repr(bolaX)+","+repr(bolaY)+","+repr(strategyStatus)+"#"
+    print('DATA SENT TO BASE : ',msg)
     networkserial.send(msg.encode())
 
 def receiveDataFromBase(xRobot2, yRobot2, tetaRobot2):

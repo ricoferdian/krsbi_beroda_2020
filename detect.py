@@ -20,7 +20,6 @@ global bolaLastSeenX
 global bolaLastSeenY
 # global myRes
 global myGyro
-global obstacles
 
 #Strategi dan base station value
 global isKickOff
@@ -58,7 +57,7 @@ def detect(save_img=False):
 
     isKickOff = False
     #R1 DEFAULT SET CARI BOLA
-    strategyState = 0
+    strategyState = 1
 
     isDribblingBola = False
 
@@ -547,25 +546,23 @@ def updateBaseData():
     global bolaLastSeenX
     global bolaLastSeenY
     global myGyro
+    global strategyState
+
     myCoordLapanganX = 0
     myCoordLapanganY = 0
     bolaLastSeenX = 0
     bolaLastSeenY = 0
     myGyro = 0
-    # global myRes
-    global obstacles
+    strategyState = 1
 
     x1 = myCoordLapanganX
     y1 = myCoordLapanganY
     teta1 = myGyro
-    obsX1 = 137.00
-    obsY1 = 100.00
-    obsX2 = 120.00
-    obsY2 = 130.00
     bolaX = bolaLastSeenX
     bolaY = bolaLastSeenY
+
     while(True):
-        sendDataToBase(x1, y1, teta1, obsX1, obsY1, obsX2, obsY2, bolaX, bolaY)
+        sendDataToBase(x1, y1, teta1, bolaX, bolaY, strategyState)
 
 def updateLocalDataFromBase():
     xRobot2 = 0.00
@@ -574,8 +571,8 @@ def updateLocalDataFromBase():
     while(True):
         receiveDataFromBase(xRobot2, yRobot2, tetaRobot2)
 
-def sendDataToBase(x1, y1, teta1, obsX1, obsY1, obsX2, obsY2, bolaX, bolaY):
-    msg = "*"+repr(x1)+","+repr(y1)+","+repr(teta1)+","+repr(obsX1)+","+repr(obsY1)+","+repr(obsX2)+","+repr(obsY2)+","+repr(bolaX)+","+repr(bolaY)+"#"
+def sendDataToBase(x1, y1, teta1, bolaX, bolaY, strategyStatus):
+    msg = "*"+repr(x1)+","+repr(y1)+","+repr(teta1)+","+repr(bolaX)+","+repr(bolaY)+","+repr(strategyStatus)+"#"
     print('DATA SENT TO BASE : ',msg)
     networkserial.send(msg.encode())
 
