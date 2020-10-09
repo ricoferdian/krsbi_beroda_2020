@@ -608,8 +608,8 @@ def readSerialData():
     global myRes
     global myGyro
     global isKickOff
+    isKickOff = False
     while (True):
-        isKickOff = False
         # print sendSerialMode
         if sendSerialMode == True:
             if sendSerialMode == True:
