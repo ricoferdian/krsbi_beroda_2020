@@ -356,6 +356,8 @@ def detect(save_img=False):
                 start['y'] = myCoordLapanganY
 
                 print('isDribblingBola : ',isDribblingBola)
+                if(strategyState == 2 or strategyState==5):
+                    isBolaDekat = True
                 if (isDribblingBola):
                     if (strategyState == 1):
                         strategyState = 2
@@ -578,7 +580,7 @@ def updateBaseData():
     bolaLastSeenX = 0
     bolaLastSeenY = 0
     myGyro = 0
-    strategyState = 1
+    strategyState = 10
 
     x1 = myCoordLapanganX
     y1 = myCoordLapanganY
