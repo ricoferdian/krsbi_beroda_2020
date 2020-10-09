@@ -297,7 +297,7 @@ def detect(save_img=False):
                                 realDistanceX = object['realDistanceX']
                                 realDistanceY = object['realDistanceY']
                                 #JIKA GAWANG DEKAT, TENDANG
-                                if(realDistanceY<400):
+                                if(realDistanceY<300):
                                     print('TENDANG BOLANYAAAAAA')
                                     print('TENDANG BOLANYAAAAAA')
                                     print('TENDANG BOLANYAAAAAA')
