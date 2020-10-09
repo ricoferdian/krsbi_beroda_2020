@@ -582,7 +582,7 @@ def sendDataToBase(x1, y1, teta1, obsX1, obsY1, obsX2, obsY2, bolaX, bolaY):
     msg = "*"+repr(x1)+","+repr(y1)+","+repr(teta1)+","+repr(obsX1)+","+\
           repr(obsY1)+","+repr(obsX2)+","+repr(obsY2)+","+repr(bolaX)+","+repr(bolaY)+"#"
     print('DATA SENT TO BASE : ',msg)
-    networkserial.sendall(msg.encode())
+    networkserial.send(msg.encode())
 
 def receiveDataFromBase(xRobot2, yRobot2, tetaRobot2):
     data = networkserial.recv(4096)
