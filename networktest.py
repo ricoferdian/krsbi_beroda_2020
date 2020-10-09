@@ -1,6 +1,6 @@
 import socket, threading
 
-HOST = '192.168.43.118'
+HOST = '192.168.43.179'
 # LAPTOP DEK JUN
 # PORT = 28097
 # LAPTOP UCUP
