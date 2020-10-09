@@ -1,6 +1,6 @@
 import socket, threading
 
-HOST = '192.168.43.118'
+HOST = '192.168.43.20'
 PORT = 28097
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -35,7 +35,6 @@ def sendDataToBase(x1, y1, teta1, obsX1, obsY1, obsX2, obsY2, bolaX, bolaY):
 def receiveDataFromBase(xRobot2, yRobot2, tetaRobot2):
     data = networkserial.recv(4096)
     print('DATA RECEIVED : ',data)
-
 
 def runServerThread():
     t3 = threading.Thread(target=updateBaseData)
