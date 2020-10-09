@@ -2,9 +2,9 @@ import socket, threading
 
 HOST = '192.168.43.194'
 # LAPTOP DEK JUN
-PORT = 28097
+# PORT = 28097
 # LAPTOP UCUP
-# PORT = 5204
+PORT = 5204
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
@@ -15,7 +15,7 @@ def updateBaseData():
     bolaLastSeenX = 0
     bolaLastSeenY = 0
     myGyro = 0
-    strategyState = 3
+    strategyState = 5
 
     x1 = myCoordLapanganX
     y1 = myCoordLapanganY
@@ -23,8 +23,13 @@ def updateBaseData():
     bolaX = bolaLastSeenX
     bolaY = bolaLastSeenY
 
-    while(True):
-        sendDataToBase(x1, y1, teta1, bolaX, bolaY, strategyState)
+    i = 0
+    isIter = True
+    while(isIter):
+        i+=1
+        if(i==20):
+            isIter = False
+        sendDataToBase(x1, y1, teta1, bolaX, bolaY, i)
 
 def updateLocalDataFromBase():
     xRobot2 = 0.00
@@ -35,7 +40,7 @@ def updateLocalDataFromBase():
 
 def sendDataToBase(x1, y1, teta1, bolaX, bolaY, strategyStatus):
     msg = "*"+repr(x1)+","+repr(y1)+","+repr(teta1)+","+repr(bolaX)+","+repr(bolaY)+","+repr(strategyStatus)+"#"
-    # print('DATA SENT TO BASE : ',msg)
+    print('DATA SENT TO BASE : ',msg)
     networkserial.send(msg.encode())
 
 def receiveDataFromBase(xRobot2, yRobot2, tetaRobot2):

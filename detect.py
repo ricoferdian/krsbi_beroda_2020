@@ -5,6 +5,7 @@ from getcoord import getcoordinate
 import serial
 import socket
 import threading
+import time
 
 from models.experimental import *
 from utils.datasets import *
@@ -562,42 +563,6 @@ def parseCommand(command):
             readdata += command[commandIndex]
         commandIndex += 1
     newStrategyState = xystrategy[7]
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
-    print('newStrategyState',newStrategyState)
     if(newStrategyState>strategyState):
         strategyState = newStrategyState
 
@@ -635,6 +600,7 @@ def updateLocalDataFromBase():
         receiveDataFromBase(xRobot2, yRobot2, tetaRobot2)
 
 def sendDataToBase(x1, y1, teta1, bolaX, bolaY, strategyStatus):
+    time.sleep(1)
     msg = "*"+repr(x1)+","+repr(y1)+","+repr(teta1)+","+repr(bolaX)+","+repr(bolaY)+","+repr(strategyStatus)+"#"
     print('DATA SENT TO BASE : ',msg)
     networkserial.send(msg.encode())
