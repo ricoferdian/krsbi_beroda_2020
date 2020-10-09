@@ -24,9 +24,7 @@ global obstacles
 
 #Strategi dan base station value
 global isKickOff
-global isRobotCariBola
-global isRobotTungguRobotLain
-global isRobotCariGawang
+global strategyState
 global isDribblingBola
 
 #Serial port Arduino
@@ -38,8 +36,8 @@ gyroCalibration = 0
 HOST = '192.168.43.110'
 PORT = 28097
 
-# networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# networkserial.connect((HOST, PORT))
+networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+networkserial.connect((HOST, PORT))
 
 def detect(save_img=False):
     #ROBOT 2
@@ -59,18 +57,12 @@ def detect(save_img=False):
     splitSizeGrid = 50
 
     global isKickOff
-    global isRobotCariBola
-    global isRobotTungguRobotLain
-    global isRobotCariGawang
+    global strategyState
     global isDribblingBola
 
     isKickOff = False
     #R1 DEFAULT SET CARI BOLA
-    isRobotCariBola = False
-    #R2 DEFAULT SET TUNGGU ROBOT LAIN
-    isRobotTungguRobotLain = False
-    #R1 KALAU SUDAH OPER KE R2 CARI GAWANG
-    isRobotCariGawang = False
+    strategyState = 0
 
     isDribblingBola = False
 
@@ -617,7 +609,7 @@ def readSerialData():
     global myGyro
     global isKickOff
     while (True):
-        isKickOff = True
+        isKickOff = False
         # print sendSerialMode
         if sendSerialMode == True:
             if sendSerialMode == True:
