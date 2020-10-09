@@ -474,7 +474,6 @@ def detect(save_img=False):
                     print('msg for PID', msg)
                     ser.write(msg.encode())
                 else:
-                    strategyState = 0
                     msg = "*0,0,0,0,0#"
                     ser.write(msg.encode())
 
@@ -557,7 +556,9 @@ def parseCommand(command):
         else:
             readdata += command[commandIndex]
         commandIndex += 1
-    strategyState = xystrategy[7]
+    newStrategyState = xystrategy[7]
+    if(newStrategyState>strategyState):
+        strategyState = newStrategyState
 
 def updateBaseData():
     global myCoordX
