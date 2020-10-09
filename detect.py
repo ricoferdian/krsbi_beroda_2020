@@ -32,11 +32,11 @@ global ser
 #Gyro calibration sesuaikan dengan sudut gyro saat menghadap gawang
 gyroCalibration = 0
 
-HOST = '192.168.43.118'
+HOST = '192.168.43.61'
 # LAPTOP DEK JUN
-PORT = 28097
+# PORT = 28097
 # LAPTOP UCUP
-# PORT = 5204
+PORT = 5204
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
@@ -248,6 +248,11 @@ def detect(save_img=False):
                 isTendangBola = False
                 isBolaDekat = False
 
+                #STATE R1
+                arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
+                #STATE R2
+                arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
+
                 if(len(arr_objects)>0):
                     for object in arr_objects:
                         #Iterate object dan definisikan lokasinya di lapangan
@@ -260,7 +265,7 @@ def detect(save_img=False):
 
                         if(object['label']=='bola'):
                             isNemuBola = True
-                            if(not isDribblingBola):
+                            if(not isDribblingBola and (strategyState==arrayStrategy[1] or strategyState==arrayStrategy[6])):
                                 print('AKU NYARI BOLA', object)
                                 isNyariBola = True
                                 isTendangBola = False
@@ -282,7 +287,7 @@ def detect(save_img=False):
                                     end = None
                                     isEndpointInit = True
                         elif (object['label']=='gawang'):
-                            if (isDribblingBola):
+                            if (strategyState==arrayStrategy[3] or strategyState==arrayStrategy[7]):
                                 #Cari gawang
                                 print('AKU NYARI GAWANG', object)
                                 end = {}
@@ -293,32 +298,30 @@ def detect(save_img=False):
                                 realDistanceX = object['realDistanceX']
                                 realDistanceY = object['realDistanceY']
                                 #JIKA GAWANG DEKAT, TENDANG
-                                if(realDistanceY<330):
-                                    print('TENDANG BOLANYAAAAAA')
-                                    print('TENDANG BOLANYAAAAAA')
-                                    print('TENDANG BOLANYAAAAAA')
+                                if(isDribblingBola and realDistanceY<330):
                                     isTendangBola = True
                             else:
                                 if(not isEndpointInit):
                                     end = None
                                     isEndpointInit = True
-
-                        # elif (object['label'] == 'robot'):
-                        #     if (isDribblingBola):
-                        #         # Cari gawang
-                        #         print('AKU NYARI TEMENKU DIMANA', object)
-                        #         end = {}
-                        #         end['x'] = object['x']
-                        #         end['y'] = object['y']
-                        #         isEndpointInit = True
-                        #         tetaBall = object['tetaObj']
-                        #         realDistanceX = object['realDistanceX']
-                        #         realDistanceY = object['realDistanceY']
-                        #     else:
-                        #         if (not isEndpointInit):
-                        #             end = None
-                        #             isEndpointInit = True
-
+                        elif (object['label'] == 'robot'):
+                            if (isDribblingBola or (strategyState==arrayStrategy[2] or strategyState==arrayStrategy[5] or strategyState==arrayStrategy[9])):
+                                # Cari gawang
+                                print('AKU NYARI TEMENKU DIMANA', object)
+                                end = {}
+                                end['x'] = object['x']
+                                end['y'] = object['y']
+                                isEndpointInit = True
+                                tetaBall = object['tetaObj']
+                                realDistanceX = object['realDistanceX']
+                                realDistanceY = object['realDistanceY']
+                                #JIKA ROBOT DEKAT, TENDANG
+                                if(isDribblingBola and realDistanceY<150):
+                                    isTendangBola = True
+                            else:
+                                if (not isEndpointInit):
+                                    end = None
+                                    isEndpointInit = True
                         elif(object['label'] == 'obstacle'):
                             print('ADA OBSTACLE', object)
                             obstacle = {}
@@ -356,6 +359,12 @@ def detect(save_img=False):
 
                 print('isDribblingBola : ',isDribblingBola)
                 if (isDribblingBola):
+                    if (strategyState == 1):
+                        strategyState = 2
+                    if (strategyState == 3):
+                        strategyState = 5
+                    if (strategyState == 6):
+                        strategyState = 7
                     isBolaDekat = True
 
                 paths = []
@@ -458,10 +467,14 @@ def detect(save_img=False):
                     #TENDANG BOLA DAN JIKA SUDAH MENGHADAP GAWANG
                     if(isTendangBola and (tetaBall<10 and tetaBall>-10)):
                         isTendangBola = 1
+                        if (strategyState == 2):
+                            strategyState = 3
+                        elif (strategyState == 5):
+                            strategyState = 6
                     else:
                         isTendangBola = 0
 
-                    msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat) + "#"
+                    msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat) + "," + repr(0) +"," + repr(0) +"," + repr(0) + "#"
                     print('msg for PID', msg)
                     ser.write(msg.encode())
                 else:
@@ -520,23 +533,34 @@ def detect(save_img=False):
 def perintahRobot(command):
     global isKickOff
     if(command=='K'):
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
         isKickOff = True
     if(command=='r'):
         isKickOff = False
+    elif(command[0]=='*'):
+        parseCommand(command)
+
+def parseCommand(command):
+    global strategyState
+    readdata = ''
+    isNotEnd = True
+    xystrategy = [0 for i in range(8)]
+    commandIndex = 0
+    i = 0
+    while(isNotEnd):
+        if (command[commandIndex] == '*'):
+            readdata = ''
+        elif (command[commandIndex] == ','):
+            xystrategy[i] = float(readdata)
+            i += 1
+            readdata = ''
+        elif (command[commandIndex] == '#'):
+            isNotEnd = False
+            xystrategy[i] = float(readdata)
+            i = 0
+        else:
+            readdata += command[commandIndex]
+        commandIndex += 1
+    strategyState = xystrategy[7]
 
 def updateBaseData():
     global myCoordX
