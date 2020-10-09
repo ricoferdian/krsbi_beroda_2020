@@ -314,7 +314,7 @@ def detect(save_img=False):
                                 if(not isDribblingBola):
                                     realDistanceY = 0
                                     realDistanceX = 0
-                                if(isDribblingBola and realDistanceY<150):
+                                if(isDribblingBola and realDistanceY<300):
                                     isTendangBola = True
                             else:
                                 if (not isEndpointInit):
