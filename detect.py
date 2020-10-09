@@ -485,57 +485,37 @@ def detect(save_img=False):
 
                     if(robotId==1):
                         if(strategyState==1):
-                            if(not newCoordX<20 or not newCoordX>-20):
+                            if(newCoordX<20 and newCoordX>-20):
+                                newCoordY = newCoordY
+                            else:
                                 newCoordY = 0
-                            isTranslasi = 1
-                            isRotasi = 0
-                        elif(strategyState==2):
-                            isTranslasi = 0
-                            isRotasi = 1
+                            tetaBall = myGyro
                         elif(strategyState==3):
-                            if(not newCoordX<20 or not newCoordX>-20):
+                            if(newCoordX<20 and newCoordX>-20):
+                                newCoordY = newCoordY
+                            else:
                                 newCoordY = 0
-                            isTranslasi = 1
-                            isRotasi = 0
-                        elif(strategyState==5):
-                            isTranslasi = 0
-                            isRotasi = 1
-                        elif(strategyState==6):
-                            isTranslasi = 0
-                            isRotasi = 1
-                        elif(strategyState==7):
-                            isTranslasi = 0
-                            isRotasi = 1
+                            tetaBall = myGyro
                     else:
                         if(strategyState==1):
-                            if(not newCoordX<20 or not newCoordX>-20):
+                            if(newCoordX<20 and newCoordX>-20):
+                                newCoordY = newCoordY
+                            else:
                                 newCoordY = 0
-                            isTranslasi = 1
-                            isRotasi = 0
-                        elif(strategyState==2):
-                            isTranslasi = 0
-                            isRotasi = 1
-                        elif(strategyState==3):
-                            isTranslasi = 0
-                            isRotasi = 1
-                        elif(strategyState==5):
-                            isTranslasi = 0
-                            isRotasi = 1
+                            tetaBall = myGyro
                         elif(strategyState==6):
-                            if(not newCoordX<20 or not newCoordX>-20):
+                            if(newCoordX<20 and newCoordX>-20):
+                                newCoordY = newCoordY
+                            else:
                                 newCoordY = 0
-                            isTranslasi = 1
-                            isRotasi = 0
-                        elif(strategyState==7):
-                            isTranslasi = 0
-                            isRotasi = 1
+                            tetaBall = myGyro
 
-                    msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat) + "," + repr(isTranslasi) +"," + repr(isRotasi) +"," + repr(0) + "#"
+                    msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat)+ "," + repr(0) + "#"
                     print('msg for PID', msg)
                     ser.write(msg.encode())
                 else:
                     strategyState = 1
-                    msg = "*0,0,0,0,0,0,0,1#"
+                    msg = "*0,0,0,0,0,1#"
                     ser.write(msg.encode())
 
                 # pidRobot(tetaBall, newCoordX, newCoordY, ser)
