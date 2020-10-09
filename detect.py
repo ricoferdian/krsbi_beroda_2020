@@ -310,12 +310,9 @@ def detect(save_img=False):
                                 end['y'] = object['y']
                                 isEndpointInit = True
                                 tetaBall = object['tetaObj']
-                                # realDistanceX = object['realDistanceX']
-                                # realDistanceY = object['realDistanceY']
-                                realDistanceX = 0
-                                realDistanceY = 0
                                 #JIKA ROBOT DEKAT, TENDANG
                                 if(isDribblingBola and realDistanceY<150):
+                                    realDistanceY = 0
                                     isTendangBola = True
                             else:
                                 if (not isEndpointInit):
