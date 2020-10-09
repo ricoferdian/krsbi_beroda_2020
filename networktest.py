@@ -12,7 +12,7 @@ def updateBaseData():
     bolaLastSeenX = 0
     bolaLastSeenY = 0
     myGyro = 0
-    strategyState = 1
+    strategyState = 8
 
     x1 = myCoordLapanganX
     y1 = myCoordLapanganY
