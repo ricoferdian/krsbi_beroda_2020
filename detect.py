@@ -551,6 +551,8 @@ def updateBaseData():
     global myCoordLapanganY
     global bolaLastSeenX
     global bolaLastSeenY
+    bolaLastSeenX = 0
+    bolaLastSeenY = 0
     # global myRes
     global myGyro
     global obstacles
@@ -611,6 +613,8 @@ def readSerialData():
 
     global myCoordX
     global myCoordY
+    myCoordX = 0
+    myCoordY = 0
 
     global myCoordLapanganX
     global myCoordLapanganY
@@ -621,6 +625,7 @@ def readSerialData():
 
     global myRes
     global myGyro
+    myGyro = 0
     global isKickOff
     while (True):
         # print sendSerialMode
