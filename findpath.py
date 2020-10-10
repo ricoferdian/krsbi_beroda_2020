@@ -42,7 +42,8 @@ def findPathRobot(startGridLoc, matrixGridLapangan, endGridLoc):
     end = grid.node(endGridLoc[0], endGridLoc[1])
     # Hasil path diberikan ke master lagi
 
-    finder = AStarFinder(diagonal_movement=DiagonalMovement.always)
+    finder = AStarFinder(diagonal_movement=DiagonalMovement.only_when_no_obstacle)
+    # finder = AStarFinder(diagonal_movement=DiagonalMovement.always)
     paths, runs = finder.find_path(start, end, grid)
 
     return paths
