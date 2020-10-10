@@ -277,7 +277,7 @@ def detect(save_img=False):
                                 realDistanceY = object['realDistanceY']
                                 if(not isEndpointInit):
                                     isEndpointInit = True
-                                if(realDistanceY<160):
+                                if(realDistanceY<150):
                                     print('BOLA SUDAH DEKAT')
                                     isBolaDekat = True
                             else:
@@ -413,7 +413,7 @@ def detect(save_img=False):
                 newCoordY = 0
                 print('paths',paths)
 
-                if(len(paths)>2):
+                if(len(paths)>1 and not isBolaDekat):
                     print('PAKE PATHFINDING')
                     newCoordX = gridLapangan[paths[1][0]][paths[1][1]][0]
                     newCoordY = gridLapangan[paths[1][0]][paths[1][1]][1]
