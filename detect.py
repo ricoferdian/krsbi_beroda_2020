@@ -370,7 +370,9 @@ def detect(save_img=False):
                     isBolaDekat = True
                 if (isDribblingBola):
                     if (strategyState == 1):
-                        strategyState = 2
+                        # strategyState = 2
+                        #langung ke gawang
+                        strategyState = 7
                     elif (strategyState == 3):
                         time.sleep(3)
                         strategyState = 5
