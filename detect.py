@@ -5,6 +5,7 @@ from getcoord import getcoordinate
 import serial
 import socket
 import threading
+import time
 
 from models.experimental import *
 from utils.datasets import *
@@ -29,14 +30,18 @@ global isDribblingBola
 #Serial port Arduino
 global ser
 
-#Gyro calibration sesuaikan dengan sudut gyro saat menghadap gawang
-gyroCalibration = 90
+#Gyro calibration sesuaikan dengan sudut gyro saat menghadap gawangs
+gyroCalibration = 0
 
 HOST = '192.168.43.61'
-# LAPTOP DEK JUN
-# PORT = 28097
 # LAPTOP UCUP
-PORT = 5204
+PORT = 28097
+arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
+robotId = 1
+# LAPTOP DEK JUN
+# PORT = 5204
+# arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
+# robotId = 2
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
@@ -56,8 +61,6 @@ def detect(save_img=False):
     global isDribblingBola
 
     isKickOff = False
-    #R1 DEFAULT SET CARI BOLA
-    strategyState = 1
 
     isDribblingBola = False
 
@@ -260,7 +263,7 @@ def detect(save_img=False):
 
                         if(object['label']=='bola'):
                             isNemuBola = True
-                            if(not isDribblingBola):
+                            if(not isDribblingBola and (strategyState==arrayStrategy[1] or strategyState==arrayStrategy[6])):
                                 print('AKU NYARI BOLA', object)
                                 isNyariBola = True
                                 isTendangBola = False
@@ -274,7 +277,7 @@ def detect(save_img=False):
                                 realDistanceY = object['realDistanceY']
                                 if(not isEndpointInit):
                                     isEndpointInit = True
-                                if(realDistanceY<150):
+                                if(realDistanceY<160):
                                     print('BOLA SUDAH DEKAT')
                                     isBolaDekat = True
                             else:
@@ -282,7 +285,7 @@ def detect(save_img=False):
                                     end = None
                                     isEndpointInit = True
                         elif (object['label']=='gawang'):
-                            if (isDribblingBola):
+                            if (strategyState==arrayStrategy[3] or strategyState==arrayStrategy[7]):
                                 #Cari gawang
                                 print('AKU NYARI GAWANG', object)
                                 end = {}
@@ -290,40 +293,48 @@ def detect(save_img=False):
                                 end['y'] = object['y']
                                 isEndpointInit = True
                                 tetaBall = object['tetaObj']
-                                realDistanceX = object['realDistanceX']*0.85
-                                realDistanceY = object['realDistanceY']*0.85
+                                realDistanceX = object['realDistanceX']
+                                realDistanceY = object['realDistanceY']
                                 #JIKA GAWANG DEKAT, TENDANG
-                                if(realDistanceY<330):
-                                    print('TENDANG BOLANYAAAAAA')
-                                    print('TENDANG BOLANYAAAAAA')
-                                    print('TENDANG BOLANYAAAAAA')
+                                if(isDribblingBola and realDistanceY<400):
                                     isTendangBola = True
+                                elif(realDistanceY<400):
+                                    realDistanceY = 0
+                                    realDistanceX = 0
+                                elif(strategyState==arrayStrategy[7] and not isDribblingBola):
+                                    strategyState = 6
+
                             else:
                                 if(not isEndpointInit):
                                     end = None
                                     isEndpointInit = True
-
-                        # elif (object['label'] == 'robot'):
-                        #     if (isDribblingBola):
-                        #         # Cari gawang
-                        #         print('AKU NYARI TEMENKU DIMANA', object)
-                        #         end = {}
-                        #         end['x'] = object['x']
-                        #         end['y'] = object['y']
-                        #         isEndpointInit = True
-                        #         tetaBall = object['tetaObj']
-                        #         realDistanceX = object['realDistanceX']
-                        #         realDistanceY = object['realDistanceY']
-                        #     else:
-                        #         if (not isEndpointInit):
-                        #             end = None
-                        #             isEndpointInit = True
-
+                        elif (object['label'] == 'robot'):
+                            if (isDribblingBola or (strategyState==arrayStrategy[2] or strategyState==arrayStrategy[5] or strategyState==arrayStrategy[9])):
+                                # Cari gawang
+                                print('AKU NYARI TEMENKU DIMANA', object)
+                                end = {}
+                                end['x'] = object['x']
+                                end['y'] = object['y']
+                                isEndpointInit = True
+                                tetaBall = object['tetaObj']
+                                realDistanceX = object['realDistanceX']
+                                realDistanceY = object['realDistanceY']
+                                #JIKA ROBOT DEKAT, TENDANG
+                                if(not isDribblingBola):
+                                    realDistanceY = 0
+                                    realDistanceX = 0
+                                if(isDribblingBola and realDistanceY<300):
+                                    realDistanceY = 0
+                                    isTendangBola = True
+                            else:
+                                if (not isEndpointInit):
+                                    end = None
+                                    isEndpointInit = True
                         elif(object['label'] == 'obstacle'):
                             print('ADA OBSTACLE', object)
                             obstacle = {}
-                            obstacle['x'] = object['x']*0.9
-                            obstacle['y'] = object['y']*0.9
+                            obstacle['x'] = object['x']
+                            obstacle['y'] = object['y']
                             obstacleGridLoc = getGridLocationFromCoord(obstacle,splitSizeGrid)
                             if(obstacleGridLoc[0]>11):
                                 obstacleGridLoc[0] = 11
@@ -355,7 +366,16 @@ def detect(save_img=False):
                 start['y'] = myCoordLapanganY
 
                 print('isDribblingBola : ',isDribblingBola)
+                if(strategyState == 2 or strategyState==5):
+                    isBolaDekat = True
                 if (isDribblingBola):
+                    if (strategyState == 1):
+                        strategyState = 2
+                    elif (strategyState == 3):
+                        time.sleep(3)
+                        strategyState = 5
+                    elif (strategyState == 6):
+                        strategyState = 7
                     isBolaDekat = True
 
                 paths = []
@@ -390,63 +410,65 @@ def detect(save_img=False):
                 newCoordX = 0
                 newCoordY = 0
                 print('paths',paths)
+                # if(len(paths)>1):
+                #     print('PAKE PATHFINDING')
+                #     newCoordX = gridLapangan[paths[1][0]][paths[1][1]][0]
+                #     newCoordY = gridLapangan[paths[1][0]][paths[1][1]][1]
+                #
+                #     # Iterate balikin lagi ke relatif
+                #     rotationAngle = myGyro + gyroCalibration
+                #     # X dan Y dibalik karena kamera bacanya kebalik
+                #     print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
+                #     print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
+                #     newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
+                #     print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
+                #     print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
+                #
+                #     if(myCoordX>newCoordX):
+                #         newCoordX = myCoordX - newCoordX
+                #     else:
+                #         newCoordX = newCoordX - myCoordX
+                #     if(myCoordY>newCoordY):
+                #         newCoordY = myCoordY - newCoordY
+                #     else:
+                #         newCoordY = newCoordY - myCoordY
+                #
+                #     print('ROBOT AKAN PERGI KE ',paths[1])
+                #     print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
+                #     print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
+                # elif(end is not None):
+                #     print('NYARI TANPA PATHFINDING BERDASARKAN END')
+                #     endGridLoc = getGridLocationFromCoord(end,splitSizeGrid)
+                #     newCoordX = gridLapangan[endGridLoc[0]][endGridLoc[1]][0]
+                #     newCoordY = gridLapangan[endGridLoc[0]][endGridLoc[1]][1]
+                #
+                #     # Iterate balikin lagi ke relatif
+                #     rotationAngle = myGyro + gyroCalibration
+                #     # X dan Y dibalik karena kamera bacanya kebalik
+                #     print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
+                #     print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
+                #     newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
+                #     print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
+                #     print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
+                #
+                #     print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
+                #     print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
+                # else:
+                #     print('LANGSUNG NYARI TANPA PATHFINDING BERDASARKAN YANG DILIHAT')
+                #     newCoordX = realDistanceX
+                #     newCoordY = realDistanceY
+                #     print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
+                #     print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
 
-                if(len(paths)>1):
-                    print('PAKE PATHFINDING')
-                    newCoordX = gridLapangan[paths[1][0]][paths[1][1]][0]
-                    newCoordY = gridLapangan[paths[1][0]][paths[1][1]][1]
+                print('LANGSUNG NYARI TANPA PATHFINDING BERDASARKAN YANG DILIHAT')
+                newCoordX = realDistanceX
+                newCoordY = realDistanceY
+                print('ROBOT AKAN PERGI KE REAL COORD X', newCoordX)
+                print('ROBOT AKAN PERGI KE REAL COORD Y', newCoordY)
 
-                    # Iterate balikin lagi ke relatif
-                    rotationAngle = myGyro + gyroCalibration
-                    # X dan Y dibalik karena kamera bacanya kebalik
-                    print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
-                    print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
-                    newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
-                    print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
-                    print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
+                # msg = "*0,1250,0#"
 
-                    if(myCoordX>newCoordX):
-                        newCoordX = myCoordX - newCoordX
-                    else:
-                        newCoordX = newCoordX - myCoordX
-                    if(myCoordY>newCoordY):
-                        newCoordY = myCoordY - newCoordY
-                    else:
-                        newCoordY = newCoordY - myCoordY
-
-                    print('ROBOT AKAN PERGI KE ',paths[1])
-                    print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
-                    print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
-                elif(end is not None):
-                    print('NYARI TANPA PATHFINDING BERDASARKAN END')
-                    endGridLoc = getGridLocationFromCoord(end,splitSizeGrid)
-                    newCoordX = gridLapangan[endGridLoc[0]][endGridLoc[1]][0]
-                    newCoordY = gridLapangan[endGridLoc[0]][endGridLoc[1]][1]
-
-                    # Iterate balikin lagi ke relatif
-                    rotationAngle = myGyro + gyroCalibration
-                    # X dan Y dibalik karena kamera bacanya kebalik
-                    print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
-                    print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
-                    newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
-                    print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
-                    print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
-
-                    print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
-                    print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
-                else:
-                    print('LANGSUNG NYARI TANPA PATHFINDING BERDASARKAN YANG DILIHAT')
-                    newCoordX = realDistanceX
-                    newCoordY = realDistanceY
-                    print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
-                    print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
-
-                # print('LANGSUNG NYARI TANPA PATHFINDING BERDASARKAN YANG DILIHAT')
-                # newCoordX = realDistanceX
-                # newCoordY = realDistanceY
-                # print('ROBOT AKAN PERGI KE REAL COORD X', newCoordX)
-                # print('ROBOT AKAN PERGI KE REAL COORD Y', newCoordY)
-
+                # ser.open()
                 print('isKickOff',isKickOff)
                 if(isKickOff):
                     if(isBolaDekat):
@@ -454,16 +476,62 @@ def detect(save_img=False):
                     else:
                         isBolaDekat = 0
                     #TENDANG BOLA DAN JIKA SUDAH MENGHADAP GAWANG
-                    if(isTendangBola and (tetaBall<10 and tetaBall>-10)):
+                    if(isTendangBola):
                         isTendangBola = 1
                     else:
                         isTendangBola = 0
+                    if(isTendangBola and (tetaBall<10 and tetaBall>-10)):
+                        isTendangBola = 1
+                        if (strategyState == 2):
+                            strategyState = 3
+                        elif (strategyState == 5):
+                            strategyState = 6
+                    else:
+                        isTendangBola = 0
 
-                    msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat) + "#"
+                    # if (robotId == 1):
+                    #     if (strategyState == 1):
+                    #         if (myCoordX < 180):
+                    #             if (newCoordX > 20 and newCoordX < -20):
+                    #                 newCoordY = 0
+                    #                 tetaBall = myGyro
+                    #     elif (strategyState == 3):
+                    #         if (newCoordX > 20 and newCoordX < -20):
+                    #             newCoordY = 0
+                    #             newCoordX = 180
+                    #             tetaBall = -myGyro
+                    #     # elif(strategyState==3):
+                    #     #     if(myCoordX>80):
+                    #     #         newCoordY = 0
+                    #     #         newCoordX = -100
+                    #     #         tetaBall = -myGyro
+                    # else:
+                    #     if (strategyState == 1):
+                    #         if (myCoordX > -180):
+                    #             if (newCoordX > 20 and newCoordX < -20):
+                    #                 newCoordY = 0
+                    #                 tetaBall = -myGyro
+                    #     elif (strategyState == 6):
+                    #         if (newCoordX > 20 and newCoordX < -20):
+                    #             newCoordY = 0
+                    #             newCoordX = -180
+                    #             tetaBall = -myGyro
+                    #         # else:
+                    #         #     if(myCoordY<100):
+                    #         #         newCoordY = 100
+                    #         #         newCoordX = 0
+                    #     # elif(strategyState==6):
+                    #     #     if(myCoordX<0):
+                    #     #         newCoordY = 0
+                    #     #         newCoordX = 180
+                    #     #         tetaBall = -myGyro
+
+                    msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat)+ "," + repr(0) + "#"
                     print('msg for PID', msg)
                     ser.write(msg.encode())
                 else:
-                    msg = "*0,0,0,0,0#"
+                    strategyState = 1
+                    msg = "*0,0,0,0,0,1#"
                     ser.write(msg.encode())
 
                 # pidRobot(tetaBall, newCoordX, newCoordY, ser)
@@ -518,23 +586,36 @@ def detect(save_img=False):
 def perintahRobot(command):
     global isKickOff
     if(command=='K'):
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
-        print('KICKOFF!!!!!')
         isKickOff = True
     if(command=='r'):
         isKickOff = False
+    elif(command[0]=='*'):
+        parseCommand(command)
+
+def parseCommand(command):
+    global strategyState
+    readdata = ''
+    isNotEnd = True
+    xystrategy = [0 for i in range(8)]
+    commandIndex = 0
+    i = 0
+    while(isNotEnd):
+        if (command[commandIndex] == '*'):
+            readdata = ''
+        elif (command[commandIndex] == ','):
+            xystrategy[i] = float(readdata)
+            i += 1
+            readdata = ''
+        elif (command[commandIndex] == '#'):
+            isNotEnd = False
+            xystrategy[i] = float(readdata)
+            i = 0
+        else:
+            readdata += command[commandIndex]
+        commandIndex += 1
+    newStrategyState = xystrategy[7]
+    if(newStrategyState>strategyState):
+        strategyState = newStrategyState
 
 def updateBaseData():
     global myCoordX
@@ -570,6 +651,7 @@ def updateLocalDataFromBase():
         receiveDataFromBase(xRobot2, yRobot2, tetaRobot2)
 
 def sendDataToBase(x1, y1, teta1, bolaX, bolaY, strategyStatus):
+    time.sleep(1)
     msg = "*"+repr(x1)+","+repr(y1)+","+repr(teta1)+","+repr(bolaX)+","+repr(bolaY)+","+repr(strategyStatus)+"#"
     print('DATA SENT TO BASE : ',msg)
     networkserial.send(msg.encode())
