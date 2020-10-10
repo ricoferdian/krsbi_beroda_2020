@@ -368,6 +368,7 @@ def detect(save_img=False):
                     if (strategyState == 1):
                         strategyState = 2
                     elif (strategyState == 3):
+                        time.sleep(3)
                         strategyState = 5
                     elif (strategyState == 6):
                         strategyState = 7
@@ -474,15 +475,22 @@ def detect(save_img=False):
                     if(isTendangBola and (tetaBall<10 and tetaBall>-10)):
                         isTendangBola = 1
                         if (strategyState == 2):
+                            time.sleep(3)
                             strategyState = 3
                         elif (strategyState == 5):
+                            time.sleep(3)
                             strategyState = 6
                     else:
                         isTendangBola = 0
 
-                    if(robotId==1):
-                        if(strategyState==1):
-                            if(myCoordX<180):
+                    if (robotId == 1):
+                        if (strategyState == 1):
+                            if (myCoordX < 180):
+                                if (newCoordX > 20 and newCoordX < -20):
+                                    newCoordY = 0
+                                    tetaBall = myGyro
+                        elif (strategyState == 3):
+                            if (newCoordX > 20 and newCoordX < -20):
                                 newCoordY = 0
                                 newCoordX = 180
                                 tetaBall = -myGyro
@@ -492,8 +500,13 @@ def detect(save_img=False):
                         #         newCoordX = -100
                         #         tetaBall = -myGyro
                     else:
-                        if(strategyState==1):
-                            if(myCoordX>-180):
+                        if (strategyState == 1):
+                            if (myCoordX > -180):
+                                if (newCoordX > 20 and newCoordX < -20):
+                                    newCoordY = 0
+                                    tetaBall = -myGyro
+                        elif (strategyState == 6):
+                            if (newCoordX > 20 and newCoordX < -20):
                                 newCoordY = 0
                                 newCoordX = -180
                                 tetaBall = -myGyro
