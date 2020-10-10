@@ -411,7 +411,7 @@ def detect(save_img=False):
                 newCoordY = 0
                 print('paths',paths)
 
-                if(len(paths)>1):
+                if(len(paths)>2):
                     print('PAKE PATHFINDING')
                     newCoordX = gridLapangan[paths[1][0]][paths[1][1]][0]
                     newCoordY = gridLapangan[paths[1][0]][paths[1][1]][1]
