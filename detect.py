@@ -296,8 +296,11 @@ def detect(save_img=False):
                                 realDistanceX = object['realDistanceX']
                                 realDistanceY = object['realDistanceY']
                                 #JIKA GAWANG DEKAT, TENDANG
-                                if(isDribblingBola and realDistanceY<450):
+                                if(isDribblingBola and realDistanceY<400):
                                     isTendangBola = True
+                                elif(realDistanceY<400):
+                                    realDistanceY = 0
+                                    realDistanceX = 0
                                 elif(strategyState==arrayStrategy[7] and not isDribblingBola):
                                     strategyState = 6
 
@@ -321,6 +324,7 @@ def detect(save_img=False):
                                     realDistanceY = 0
                                     realDistanceX = 0
                                 if(isDribblingBola and realDistanceY<300):
+                                    realDistanceY = 0
                                     isTendangBola = True
                             else:
                                 if (not isEndpointInit):
@@ -472,53 +476,55 @@ def detect(save_img=False):
                     else:
                         isBolaDekat = 0
                     #TENDANG BOLA DAN JIKA SUDAH MENGHADAP GAWANG
+                    if(isTendangBola):
+                        isTendangBola = 1
+                    else:
+                        isTendangBola = 0
                     if(isTendangBola and (tetaBall<10 and tetaBall>-10)):
                         isTendangBola = 1
                         if (strategyState == 2):
-                            time.sleep(3)
                             strategyState = 3
                         elif (strategyState == 5):
-                            time.sleep(3)
                             strategyState = 6
                     else:
                         isTendangBola = 0
 
-                    if (robotId == 1):
-                        if (strategyState == 1):
-                            if (myCoordX < 180):
-                                if (newCoordX > 20 and newCoordX < -20):
-                                    newCoordY = 0
-                                    tetaBall = myGyro
-                        elif (strategyState == 3):
-                            if (newCoordX > 20 and newCoordX < -20):
-                                newCoordY = 0
-                                newCoordX = 180
-                                tetaBall = -myGyro
-                        # elif(strategyState==3):
-                        #     if(myCoordX>80):
-                        #         newCoordY = 0
-                        #         newCoordX = -100
-                        #         tetaBall = -myGyro
-                    else:
-                        if (strategyState == 1):
-                            if (myCoordX > -180):
-                                if (newCoordX > 20 and newCoordX < -20):
-                                    newCoordY = 0
-                                    tetaBall = -myGyro
-                        elif (strategyState == 6):
-                            if (newCoordX > 20 and newCoordX < -20):
-                                newCoordY = 0
-                                newCoordX = -180
-                                tetaBall = -myGyro
-                            # else:
-                            #     if(myCoordY<100):
-                            #         newCoordY = 100
-                            #         newCoordX = 0
-                        # elif(strategyState==6):
-                        #     if(myCoordX<0):
-                        #         newCoordY = 0
-                        #         newCoordX = 180
-                        #         tetaBall = -myGyro
+                    # if (robotId == 1):
+                    #     if (strategyState == 1):
+                    #         if (myCoordX < 180):
+                    #             if (newCoordX > 20 and newCoordX < -20):
+                    #                 newCoordY = 0
+                    #                 tetaBall = myGyro
+                    #     elif (strategyState == 3):
+                    #         if (newCoordX > 20 and newCoordX < -20):
+                    #             newCoordY = 0
+                    #             newCoordX = 180
+                    #             tetaBall = -myGyro
+                    #     # elif(strategyState==3):
+                    #     #     if(myCoordX>80):
+                    #     #         newCoordY = 0
+                    #     #         newCoordX = -100
+                    #     #         tetaBall = -myGyro
+                    # else:
+                    #     if (strategyState == 1):
+                    #         if (myCoordX > -180):
+                    #             if (newCoordX > 20 and newCoordX < -20):
+                    #                 newCoordY = 0
+                    #                 tetaBall = -myGyro
+                    #     elif (strategyState == 6):
+                    #         if (newCoordX > 20 and newCoordX < -20):
+                    #             newCoordY = 0
+                    #             newCoordX = -180
+                    #             tetaBall = -myGyro
+                    #         # else:
+                    #         #     if(myCoordY<100):
+                    #         #         newCoordY = 100
+                    #         #         newCoordX = 0
+                    #     # elif(strategyState==6):
+                    #     #     if(myCoordX<0):
+                    #     #         newCoordY = 0
+                    #     #         newCoordX = 180
+                    #     #         tetaBall = -myGyro
 
                     msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat)+ "," + repr(0) + "#"
                     print('msg for PID', msg)
