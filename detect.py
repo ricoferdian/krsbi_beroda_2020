@@ -486,11 +486,11 @@ def detect(save_img=False):
                                 newCoordY = 0
                                 newCoordX = 180
                                 tetaBall = -myGyro
-                        elif(strategyState==3):
-                            if(myCoordX>80):
-                                newCoordY = 0
-                                newCoordX = -100
-                                tetaBall = -myGyro
+                        # elif(strategyState==3):
+                        #     if(myCoordX>80):
+                        #         newCoordY = 0
+                        #         newCoordX = -100
+                        #         tetaBall = -myGyro
                     else:
                         if(strategyState==1):
                             if(myCoordX>-180):
@@ -501,11 +501,11 @@ def detect(save_img=False):
                             #     if(myCoordY<100):
                             #         newCoordY = 100
                             #         newCoordX = 0
-                        elif(strategyState==6):
-                            if(myCoordX<0):
-                                newCoordY = 0
-                                newCoordX = 180
-                                tetaBall = -myGyro
+                        # elif(strategyState==6):
+                        #     if(myCoordX<0):
+                        #         newCoordY = 0
+                        #         newCoordX = 180
+                        #         tetaBall = -myGyro
 
                     msg = "*" + repr(newCoordX) + "," + repr(newCoordY) + "," + repr(tetaBall) +"," + repr(isTendangBola) + "," + repr(isBolaDekat)+ "," + repr(0) + "#"
                     print('msg for PID', msg)
