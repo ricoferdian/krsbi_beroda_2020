@@ -35,13 +35,13 @@ gyroCalibration = 0
 
 HOST = '192.168.43.61'
 # LAPTOP UCUP
-# PORT = 28097
-# arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
-# robotId = 1
+PORT = 28097
+arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
+robotId = 1
 # LAPTOP DEK JUN
-PORT = 5204
-arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
-robotId = 2
+# PORT = 5204
+# arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
+# robotId = 2
 
 networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
@@ -437,23 +437,23 @@ def detect(save_img=False):
                     print('ROBOT AKAN PERGI KE ',paths[1])
                     print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
                     print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
-                elif(end is not None):
-                    print('NYARI TANPA PATHFINDING BERDASARKAN END')
-                    endGridLoc = getGridLocationFromCoord(end,splitSizeGrid)
-                    newCoordX = gridLapangan[endGridLoc[0]][endGridLoc[1]][0]
-                    newCoordY = gridLapangan[endGridLoc[0]][endGridLoc[1]][1]
-
-                    # Iterate balikin lagi ke relatif
-                    rotationAngle = myGyro + gyroCalibration
-                    # X dan Y dibalik karena kamera bacanya kebalik
-                    print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
-                    print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
-                    newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
-                    print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
-                    print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
-
-                    print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
-                    print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
+                # elif(end is not None):
+                #     print('NYARI TANPA PATHFINDING BERDASARKAN END')
+                #     endGridLoc = getGridLocationFromCoord(end,splitSizeGrid)
+                #     newCoordX = gridLapangan[endGridLoc[0]][endGridLoc[1]][0]
+                #     newCoordY = gridLapangan[endGridLoc[0]][endGridLoc[1]][1]
+                #
+                #     # Iterate balikin lagi ke relatif
+                #     rotationAngle = myGyro + gyroCalibration
+                #     # X dan Y dibalik karena kamera bacanya kebalik
+                #     print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
+                #     print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
+                #     newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
+                #     print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
+                #     print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
+                #
+                #     print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
+                #     print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
                 else:
                     print('LANGSUNG NYARI TANPA PATHFINDING BERDASARKAN YANG DILIHAT')
                     newCoordX = realDistanceX
