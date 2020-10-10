@@ -30,7 +30,7 @@ global isDribblingBola
 global ser
 
 #Gyro calibration sesuaikan dengan sudut gyro saat menghadap gawang
-gyroCalibration = 0
+gyroCalibration = 90
 
 HOST = '192.168.43.61'
 # LAPTOP DEK JUN
@@ -290,8 +290,8 @@ def detect(save_img=False):
                                 end['y'] = object['y']
                                 isEndpointInit = True
                                 tetaBall = object['tetaObj']
-                                realDistanceX = object['realDistanceX']
-                                realDistanceY = object['realDistanceY']
+                                realDistanceX = object['realDistanceX']*0.85
+                                realDistanceY = object['realDistanceY']*0.85
                                 #JIKA GAWANG DEKAT, TENDANG
                                 if(realDistanceY<330):
                                     print('TENDANG BOLANYAAAAAA')
@@ -322,8 +322,8 @@ def detect(save_img=False):
                         elif(object['label'] == 'obstacle'):
                             print('ADA OBSTACLE', object)
                             obstacle = {}
-                            obstacle['x'] = object['x']
-                            obstacle['y'] = object['y']
+                            obstacle['x'] = object['x']*0.9
+                            obstacle['y'] = object['y']*0.9
                             obstacleGridLoc = getGridLocationFromCoord(obstacle,splitSizeGrid)
                             if(obstacleGridLoc[0]>11):
                                 obstacleGridLoc[0] = 11
@@ -390,65 +390,63 @@ def detect(save_img=False):
                 newCoordX = 0
                 newCoordY = 0
                 print('paths',paths)
-                # if(len(paths)>1):
-                #     print('PAKE PATHFINDING')
-                #     newCoordX = gridLapangan[paths[1][0]][paths[1][1]][0]
-                #     newCoordY = gridLapangan[paths[1][0]][paths[1][1]][1]
-                #
-                #     # Iterate balikin lagi ke relatif
-                #     rotationAngle = myGyro + gyroCalibration
-                #     # X dan Y dibalik karena kamera bacanya kebalik
-                #     print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
-                #     print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
-                #     newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
-                #     print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
-                #     print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
-                #
-                #     if(myCoordX>newCoordX):
-                #         newCoordX = myCoordX - newCoordX
-                #     else:
-                #         newCoordX = newCoordX - myCoordX
-                #     if(myCoordY>newCoordY):
-                #         newCoordY = myCoordY - newCoordY
-                #     else:
-                #         newCoordY = newCoordY - myCoordY
-                #
-                #     print('ROBOT AKAN PERGI KE ',paths[1])
-                #     print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
-                #     print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
-                # elif(end is not None):
-                #     print('NYARI TANPA PATHFINDING BERDASARKAN END')
-                #     endGridLoc = getGridLocationFromCoord(end,splitSizeGrid)
-                #     newCoordX = gridLapangan[endGridLoc[0]][endGridLoc[1]][0]
-                #     newCoordY = gridLapangan[endGridLoc[0]][endGridLoc[1]][1]
-                #
-                #     # Iterate balikin lagi ke relatif
-                #     rotationAngle = myGyro + gyroCalibration
-                #     # X dan Y dibalik karena kamera bacanya kebalik
-                #     print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
-                #     print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
-                #     newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
-                #     print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
-                #     print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
-                #
-                #     print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
-                #     print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
-                # else:
-                #     print('LANGSUNG NYARI TANPA PATHFINDING BERDASARKAN YANG DILIHAT')
-                #     newCoordX = realDistanceX
-                #     newCoordY = realDistanceY
-                #     print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
-                #     print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
 
-                print('LANGSUNG NYARI TANPA PATHFINDING BERDASARKAN YANG DILIHAT')
-                newCoordX = realDistanceX
-                newCoordY = realDistanceY
-                print('ROBOT AKAN PERGI KE REAL COORD X', newCoordX)
-                print('ROBOT AKAN PERGI KE REAL COORD Y', newCoordY)
+                if(len(paths)>1):
+                    print('PAKE PATHFINDING')
+                    newCoordX = gridLapangan[paths[1][0]][paths[1][1]][0]
+                    newCoordY = gridLapangan[paths[1][0]][paths[1][1]][1]
 
-                # msg = "*0,1250,0#"
+                    # Iterate balikin lagi ke relatif
+                    rotationAngle = myGyro + gyroCalibration
+                    # X dan Y dibalik karena kamera bacanya kebalik
+                    print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
+                    print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
+                    newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
+                    print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
+                    print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
 
-                # ser.open()
+                    if(myCoordX>newCoordX):
+                        newCoordX = myCoordX - newCoordX
+                    else:
+                        newCoordX = newCoordX - myCoordX
+                    if(myCoordY>newCoordY):
+                        newCoordY = myCoordY - newCoordY
+                    else:
+                        newCoordY = newCoordY - myCoordY
+
+                    print('ROBOT AKAN PERGI KE ',paths[1])
+                    print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
+                    print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
+                elif(end is not None):
+                    print('NYARI TANPA PATHFINDING BERDASARKAN END')
+                    endGridLoc = getGridLocationFromCoord(end,splitSizeGrid)
+                    newCoordX = gridLapangan[endGridLoc[0]][endGridLoc[1]][0]
+                    newCoordY = gridLapangan[endGridLoc[0]][endGridLoc[1]][1]
+
+                    # Iterate balikin lagi ke relatif
+                    rotationAngle = myGyro + gyroCalibration
+                    # X dan Y dibalik karena kamera bacanya kebalik
+                    print('SEBELUM KALIBRASI GYRO COORD X',newCoordX)
+                    print('SEBELUM KALIBRASI GYRO COORD Y',newCoordY)
+                    newCoordX, newCoordY = rotateMatrix(newCoordX, newCoordY,rotationAngle)
+                    print('SETELAH KALIBRASI GYRO COORD X',newCoordX)
+                    print('SETELAH KALIBRASI GYRO COORD Y',newCoordY)
+
+                    print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
+                    print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
+                else:
+                    print('LANGSUNG NYARI TANPA PATHFINDING BERDASARKAN YANG DILIHAT')
+                    newCoordX = realDistanceX
+                    newCoordY = realDistanceY
+                    print('ROBOT AKAN PERGI KE REAL COORD X',newCoordX)
+                    print('ROBOT AKAN PERGI KE REAL COORD Y',newCoordY)
+
+                # print('LANGSUNG NYARI TANPA PATHFINDING BERDASARKAN YANG DILIHAT')
+                # newCoordX = realDistanceX
+                # newCoordY = realDistanceY
+                # print('ROBOT AKAN PERGI KE REAL COORD X', newCoordX)
+                # print('ROBOT AKAN PERGI KE REAL COORD Y', newCoordY)
+
                 print('isKickOff',isKickOff)
                 if(isKickOff):
                     if(isBolaDekat):
