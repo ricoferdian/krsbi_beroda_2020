@@ -590,8 +590,8 @@ def perintahRobot(command):
         isKickOff = True
     if(command=='r'):
         isKickOff = False
-    elif(command[0]=='*'):
-        parseCommand(command)
+    # elif(command[0]=='*'):
+    #     parseCommand(command)
 
 def parseCommand(command):
     global strategyState
@@ -756,18 +756,18 @@ def readSerialData():
             s.send('kontrol')
 
 def runMultiThread():
-    t1 = threading.Thread(target=detect)
-    t2 = threading.Thread(target=readSerialData)
+    # t1 = threading.Thread(target=detect)
+    # t2 = threading.Thread(target=readSerialData)
     t3 = threading.Thread(target=updateBaseData)
     t4 = threading.Thread(target=updateLocalDataFromBase)
 
-    t1.start()
-    t2.start()
+    # t1.start()
+    # t2.start()
     t3.start()
     t4.start()
 
-    t1.join()
-    t2.join()
+    # t1.join()
+    # t2.join()
     t3.join()
     t4.join()
 
