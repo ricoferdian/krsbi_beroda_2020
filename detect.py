@@ -60,7 +60,7 @@ def detect(save_img=False):
     global strategyState
     global isDribblingBola
 
-    isKickOff = False
+    isKickOff = True
 
     isDribblingBola = False
 
