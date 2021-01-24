@@ -33,7 +33,7 @@ global ser
 #Gyro calibration sesuaikan dengan sudut gyro saat menghadap gawangs
 gyroCalibration = 0
 
-HOST = '192.168.43.61'
+HOST = '192.168.43.178'
 # LAPTOP UCUP
 # PORT = 28097
 # arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
@@ -43,8 +43,8 @@ PORT = 5204
 arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
 robotId = 2
 
-# networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# networkserial.connect((HOST, PORT))
+networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+networkserial.connect((HOST, PORT))
 
 def detect(save_img=False):
     print("READING DETECT")
