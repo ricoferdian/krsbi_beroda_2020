@@ -299,9 +299,9 @@ def detect(save_img=False):
                             #JIKA GAWANG DEKAT, TENDANG
                             if(isDribblingBola and realDistanceY<400):
                                 isTendangBola = True
-                            elif(realDistanceY<400):
-                                realDistanceY = 0
-                                realDistanceX = 0
+                            # elif(realDistanceY<400):
+                            #     realDistanceY = 0
+                            #     realDistanceX = 0
 
                             else:
                                 if(not isEndpointInit):
@@ -713,7 +713,7 @@ def readSerialData():
                     readdata = ''
                 elif (strmsg == '#'):
                     xyresgyro[i] = float(readdata)
-                    print('xyresgyro',xyresgyro)
+                    # print('xyresgyro',xyresgyro)
                     i = 0
                     myCoordX = xyresgyro[0]
                     myCoordY = xyresgyro[1]
