@@ -265,7 +265,7 @@ def detect(save_img=False):
 
                         if(object['label']=='bola'):
                             isNemuBola = True
-                            if(not isDribblingBola and (strategyState==arrayStrategy[1] or strategyState==arrayStrategy[6])):
+                            if(not isDribblingBola ):
                                 print('AKU NYARI BOLA', object)
                                 isNyariBola = True
                                 isTendangBola = False
@@ -287,71 +287,68 @@ def detect(save_img=False):
                                     end = None
                                     isEndpointInit = True
                         elif (object['label']=='gawang'):
-                            if (strategyState==arrayStrategy[3] or strategyState==arrayStrategy[7]):
-                                #Cari gawang
-                                print('AKU NYARI GAWANG', object)
-                                end = {}
-                                end['x'] = object['x']
-                                end['y'] = object['y']
-                                isEndpointInit = True
-                                tetaBall = object['tetaObj']
-                                realDistanceX = object['realDistanceX']*0.8
-                                realDistanceY = object['realDistanceY']*0.8
-                                #JIKA GAWANG DEKAT, TENDANG
-                                if(isDribblingBola and realDistanceY<400):
-                                    isTendangBola = True
-                                elif(realDistanceY<400):
-                                    realDistanceY = 0
-                                    realDistanceX = 0
-                                elif(strategyState==arrayStrategy[7] and not isDribblingBola):
-                                    strategyState = 6
+                            #Cari gawang
+                            print('AKU NYARI GAWANG', object)
+                            end = {}
+                            end['x'] = object['x']
+                            end['y'] = object['y']
+                            isEndpointInit = True
+                            tetaBall = object['tetaObj']
+                            realDistanceX = object['realDistanceX']*0.8
+                            realDistanceY = object['realDistanceY']*0.8
+                            #JIKA GAWANG DEKAT, TENDANG
+                            if(isDribblingBola and realDistanceY<400):
+                                isTendangBola = True
+                            elif(realDistanceY<400):
+                                realDistanceY = 0
+                                realDistanceX = 0
 
                             else:
                                 if(not isEndpointInit):
                                     end = None
                                     isEndpointInit = True
-                        elif (object['label'] == 'robot'):
-                            if (isDribblingBola or (strategyState==arrayStrategy[2] or strategyState==arrayStrategy[5] or strategyState==arrayStrategy[9])):
-                                # Cari gawang
-                                print('AKU NYARI TEMENKU DIMANA', object)
-                                end = {}
-                                end['x'] = object['x']
-                                end['y'] = object['y']
-                                isEndpointInit = True
-                                tetaBall = object['tetaObj']
-                                realDistanceX = object['realDistanceX']*0.9
-                                realDistanceY = object['realDistanceY']*0.9
-                                #JIKA ROBOT DEKAT, TENDANG
-                                if(not isDribblingBola):
-                                    realDistanceY = 0
-                                    realDistanceX = 0
-                                if(isDribblingBola and realDistanceY<300):
-                                    realDistanceY = 0
-                                    isTendangBola = True
-                            else:
-                                if (not isEndpointInit):
-                                    end = None
-                                    isEndpointInit = True
-                        elif(object['label'] == 'obstacle'):
-                            print('ADA OBSTACLE', object)
-                            obstacle = {}
-                            obstacle['x'] = object['x']*0.9
-                            obstacle['y'] = object['y']*0.9
-                            obstacleGridLoc = getGridLocationFromCoord(obstacle,splitSizeGrid)
-                            if(obstacleGridLoc[0]>11):
-                                obstacleGridLoc[0] = 11
-                            elif(obstacleGridLoc[0]<0):
-                                obstacleGridLoc[0] = 0
-                            if(obstacleGridLoc[1]>8):
-                                obstacleGridLoc[1] = 8
-                            elif(obstacleGridLoc[1]<0):
-                                obstacleGridLoc[1] = 0
-
-                            # print("obstacleGridLoc",obstacleGridLoc)
-                            matrix[obstacleGridLoc[1]][obstacleGridLoc[0]] = 0
-                            if(not isNemuBola or not isDribblingBola):
-                                if(not isEndpointInit):
-                                    end = None
+                        # elif (object['label'] == 'robot'):
+                        #     if (isDribblingBola or (strategyState==arrayStrategy[2] or strategyState==arrayStrategy[5] or strategyState==arrayStrategy[9])):
+                        #         # Cari gawang
+                        #         print('AKU NYARI TEMENKU DIMANA', object)
+                        #         end = {}
+                        #         end['x'] = object['x']
+                        #         end['y'] = object['y']
+                        #         isEndpointInit = True
+                        #         tetaBall = object['tetaObj']
+                        #         realDistanceX = object['realDistanceX']*0.9
+                        #         realDistanceY = object['realDistanceY']*0.9
+                        #         #JIKA ROBOT DEKAT, TENDANG
+                        #         if(not isDribblingBola):
+                        #             realDistanceY = 0
+                        #             realDistanceX = 0
+                        #         if(isDribblingBola and realDistanceY<300):
+                        #             realDistanceY = 0
+                        #             isTendangBola = True
+                        #     else:
+                        #         if (not isEndpointInit):
+                        #             end = None
+                        #             isEndpointInit = True
+                        # elif(object['label'] == 'obstacle'):
+                        #     print('ADA OBSTACLE', object)
+                        #     obstacle = {}
+                        #     obstacle['x'] = object['x']*0.9
+                        #     obstacle['y'] = object['y']*0.9
+                        #     obstacleGridLoc = getGridLocationFromCoord(obstacle,splitSizeGrid)
+                        #     if(obstacleGridLoc[0]>11):
+                        #         obstacleGridLoc[0] = 11
+                        #     elif(obstacleGridLoc[0]<0):
+                        #         obstacleGridLoc[0] = 0
+                        #     if(obstacleGridLoc[1]>8):
+                        #         obstacleGridLoc[1] = 8
+                        #     elif(obstacleGridLoc[1]<0):
+                        #         obstacleGridLoc[1] = 0
+                        #
+                        #     # print("obstacleGridLoc",obstacleGridLoc)
+                        #     matrix[obstacleGridLoc[1]][obstacleGridLoc[0]] = 0
+                        #     if(not isNemuBola or not isDribblingBola):
+                        #         if(not isEndpointInit):
+                        #             end = None
                         if(not isNemuBola):
                             #Berputar-putar sampai melihat bola
                             print('AKU BINGUNG BOLANYA DIMANA')
@@ -486,10 +483,10 @@ def detect(save_img=False):
                         isTendangBola = 0
                     if(isTendangBola and (tetaBall<10 and tetaBall>-10)):
                         isTendangBola = 1
-                        if (strategyState == 2):
-                            strategyState = 3
-                        elif (strategyState == 5):
-                            strategyState = 6
+                        # if (strategyState == 2):
+                        #     strategyState = 3
+                        # elif (strategyState == 5):
+                        #     strategyState = 6
                     else:
                         isTendangBola = 0
 
@@ -534,7 +531,7 @@ def detect(save_img=False):
                     print('msg for PID', msg)
                     ser.write(msg.encode())
                 else:
-                    strategyState = 1
+                    # strategyState = 1
                     msg = "*0,0,0,0,0,1#"
                     ser.write(msg.encode())
 
