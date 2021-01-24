@@ -355,6 +355,8 @@ def detect(save_img=False):
                             end = {}
                             end['x'] = bolaLastSeenX
                             end['y'] = bolaLastSeenY
+                            realDistanceX = bolaLastSeenX
+                            realDistanceY = bolaLastSeenY
                         else:
                             if(not isEndpointInit):
                                 end = None
