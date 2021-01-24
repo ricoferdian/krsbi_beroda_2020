@@ -724,12 +724,12 @@ def readSerialData():
                     else:
                         isDribblingBola = False
 
-                    print('isDribblingBola : ', isDribblingBola)
+                    # print('isDribblingBola : ', isDribblingBola)
                     #myCoordY = depan robot. Terkalibrasi sebagai x positif di lapangan (menghadap gawang = 0 derajat)
                     #myCoordX = kanan robot. Terkalibrasi sebagai y positif di lapangan (menghadap kanan gawang = 90 derajat)
                     robotCoordX, robotCoordY = rotateMatrix(myCoordY,myCoordX,myGyro - gyroCalibration)
                     # print('myCoordX : ',myCoordX,' myCoordY : ',myCoordY)
-                    print('robotCoordX : ',robotCoordX,' robotCoordY : ',robotCoordY)
+                    # print('robotCoordX : ',robotCoordX,' robotCoordY : ',robotCoordY)
                     if(robotCoordX<0):
                         myCoordLapanganX += robotCoordX - myCoordLapanganX
                     elif(robotCoordX>0):
@@ -742,7 +742,7 @@ def readSerialData():
                         myCoordLapanganY += robotCoordY - myCoordLapanganY
                     else:
                         myCoordLapanganY = 0
-                    print('myCoordLapanganX : ',myCoordLapanganX,' myCoordLapanganY : ',myCoordLapanganY)
+                    # print('myCoordLapanganX : ',myCoordLapanganX,' myCoordLapanganY : ',myCoordLapanganY)
 
                 else:
                     readdata += strmsg
