@@ -47,6 +47,7 @@ robotId = 2
 # networkserial.connect((HOST, PORT))
 
 def detect(save_img=False):
+    print("READING DETECT")
     out, source, weights, view_img, save_txt, imgsz = \
         'inference/output', '1', 'D:\\Libraries\\Project\\Python\\yolov5\\runs\\exp8\\weights\\best.pt', None, None, 640
     webcam = source == '0' or source == '1' or source.startswith('rtsp') or source.startswith(
@@ -252,6 +253,7 @@ def detect(save_img=False):
                 isBolaDekat = False
 
                 if(len(arr_objects)>0):
+                    print("IBJECT DETECTION WORKS")
                     for object in arr_objects:
                         #Iterate object dan definisikan lokasinya di lapangan
                         rotationAngle = myGyro - gyroCalibration
