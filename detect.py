@@ -286,7 +286,7 @@ def detect(save_img=False):
                                 if(not isEndpointInit):
                                     end = None
                                     isEndpointInit = True
-                        elif (object['label']=='gawang'):
+                        elif (object['label']=='gawang' and isDribblingBola):
                             #Cari gawangs
                             print('AKU NYARI GAWANG', object)
                             end = {}
