@@ -287,7 +287,7 @@ def detect(save_img=False):
                                     end = None
                                     isEndpointInit = True
                         elif (object['label']=='gawang'):
-                            #Cari gawang
+                            #Cari gawangs
                             print('AKU NYARI GAWANG', object)
                             end = {}
                             end['x'] = object['x']
