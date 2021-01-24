@@ -35,16 +35,16 @@ gyroCalibration = 0
 
 HOST = '192.168.43.61'
 # LAPTOP UCUP
-PORT = 28097
-arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
-robotId = 1
+# PORT = 28097
+# arrayStrategy = [0,1,2,3,0,5,6,7,0,0]
+# robotId = 1
 # LAPTOP DEK JUN
-# PORT = 5204
-# arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
-# robotId = 2
+PORT = 5204
+arrayStrategy = [0,3,2,0,0,5,0,0,0,1]
+robotId = 2
 
-networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-networkserial.connect((HOST, PORT))
+# networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# networkserial.connect((HOST, PORT))
 
 def detect(save_img=False):
     out, source, weights, view_img, save_txt, imgsz = \
