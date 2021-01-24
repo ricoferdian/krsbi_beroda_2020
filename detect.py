@@ -1,18 +1,15 @@
 import argparse
 import torch.backends.cudnn as cudnn
-from getcoord import getcoordinate
 
 import serial
 import socket
 import threading
-import time
 
 from models.experimental import *
-from object import Object
+from objects.field_object import FieldObject
 from utils.datasets import *
 from utils.utils import *
 from findpath import *
-from modulPid import pidRobot
 
 global myCoordX
 global myCoordY
@@ -24,7 +21,7 @@ global bolaLastSeenY
 global myGyro
 
 # Strategi dan base station value
-global isKickOff
+global is_kickoff
 global strategyState
 global isDribblingBola
 
@@ -63,7 +60,7 @@ def detect(save_img=False):
     maxYLapangan = 600
     splitSizeGrid = 50
 
-    global isKickOff
+    global is_kickoff
     global strategyState
     global isDribblingBola
 
@@ -200,7 +197,7 @@ def detect(save_img=False):
                         label = '%s %.2f' % (names[int(cls)], conf)
                         plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
 
-                    object = Object(cameraCenterX, cameraCenterY)
+                    object = FieldObject(cameraCenterX, cameraCenterY)
                     object.set_center_objects(int(xyxy[0]), int(xyxy[1]), int(xyxy[2]), int(xyxy[3]))
 
                     # arr_objects.append({'label': names[int(cls)],'conf': float(conf),
@@ -471,7 +468,7 @@ def detect(save_img=False):
                 # msg = "*0,1250,0#"
 
                 # ser.open()
-                print('isKickOff', isKickOff)
+                print('is_kickoff', isKickOff)
                 if (isKickOff):
                     if (isBolaDekat > 0):
                         isBolaDekat = 1
@@ -588,13 +585,13 @@ def detect(save_img=False):
 
 
 def perintahRobot(command):
-    global isKickOff
+    global is_kickoff
     if (command == 'K'):
         isKickOff = True
     if (command == 'r'):
         isKickOff = False
     # elif(command[0]=='*'):
-    #     parseCommand(command)
+    #     parse_base_command(command)
 
 
 def parseCommand(command):
@@ -708,7 +705,7 @@ def readSerialData():
 
     global myGyro
     myGyro = 0
-    global isKickOff
+    global is_kickoff
     while (True):
         # print sendSerialMode
         if sendSerialMode == True:

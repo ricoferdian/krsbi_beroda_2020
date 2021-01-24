@@ -34,26 +34,26 @@ class Robot():
     def get_my_trajectory(self):
         return self.my_trajectory_x, self.my_trajectory_y
 
-    def kick_off(self):
-        self.is_kick_off = True
+    def set_kick_off(self, kickoff):
+        self.is_kick_off = kickoff
 
-    def free_kick(self):
-        self.is_free_kick = True
+    def set_free_kick(self, freekick):
+        self.is_free_kick = freekick
 
-    def reset(self):
-        self.is_reset = True
+    def set_reset(self, reset):
+        self.is_reset = reset
 
-    def dribble(self):
-        self.is_dribbling_bola = True
+    def set_dribble(self, dribble):
+        self.is_dribbling_bola = dribble
 
-    def bola_dekat(self):
-        self.is_bola_dekat = True
+    def set_bola_dekat(self, bola_dekat):
+        self.is_bola_dekat = bola_dekat
 
-    def tendang(self):
-        self.is_tendang_bola = True
+    def set_tendang(self, tendang):
+        self.is_tendang_bola = tendang
 
-    def gawang_dekat(self):
-        self.is_gawang_dekat = True
+    def set_gawang_dekat(self, gawangdekat):
+        self.is_gawang_dekat = gawangdekat
 
     def get_kick_off(self):
         return self.is_kick_off

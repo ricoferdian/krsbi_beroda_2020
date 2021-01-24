@@ -715,7 +715,7 @@ def coco_single_class_labels(path='../coco/labels/train2014/', label_class=43):
         i = labels[:, 0] == label_class
         if any(i):
             img_file = file.replace('labels', 'images').replace('txt', 'jpg')
-            labels[:, 0] = 0  # reset class to 0
+            labels[:, 0] = 0  # set_reset class to 0
             with open('new/images.txt', 'a') as f:  # add image to dataset list
                 f.write(img_file + '\n')
             with open('new/labels/' + Path(file).name, 'a') as f:  # write label

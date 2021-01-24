@@ -1,7 +1,7 @@
 from helper_new import *
 
 
-class Object():
+class FieldObject():
     def __init__(self, camera_c_x, camera_c_y):
         # Set center kamera
         self.camera_c_x = camera_c_x
@@ -24,10 +24,14 @@ class Object():
         self.get_real_distance()
 
     def get_real_distance(self):
+        # get real distance (pixel) dari koordinat object dalam kamera (x dan y)
         real_distance_px = distancePixel(self.camera_c_x, self.camera_c_y, self.center_x, self.center_y)
+        # get theta dari koordinat object dalam kamera (x dan y)
         self.theta = -1*teta(self.camera_c_x, self.camera_c_y, self.center_x, self.center_y)
 
+        # get real distance dari piksel ke sentimeter
         real_distance = distPix2real(real_distance_px)
+        # ambil x dan y nya
         self.real_distance_x = real_distance * cos(radians(self.theta))
         self.real_distance_y = real_distance * sin(radians(self.theta))
 
