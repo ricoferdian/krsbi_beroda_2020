@@ -92,7 +92,7 @@ def pidRobot(tetaBall, realDistanceX, realDistanceY, ser):
         previousErrorTeta = errorTeta
         print('pidT= ', pidTeta)
 
-        # realDistanceX
+        # real_distance_x
         # pidX
         if realDistanceX != None and realDistanceY != None:
             errorRealDistanceX = 0 - realDistanceX

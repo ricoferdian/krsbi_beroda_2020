@@ -128,7 +128,7 @@ def pidRobot(tetaBall, realDistanceX, realDistanceY, ser):
         pidX = 0
         pidY = 0
 
-        # realDistanceX
+        # real_distance_x
         # pidX
         if realDistanceX != None and realDistanceY != None:
             errorRealDistanceX = 0 - realDistanceX
@@ -162,7 +162,7 @@ def pidRobot(tetaBall, realDistanceX, realDistanceY, ser):
             pidY = 0
 
         # msg = "*" + repr(vMotor1) + ",0" + "," + repr(vMotor2) + "," + repr(vMotor3) + "#"
-        # msg = "*"+repr(realDistanceX)+","+repr(realDistanceY)+","+repr(pidTeta)+"#"
+        # msg = "*"+repr(real_distance_x)+","+repr(realDistanceY)+","+repr(pidTeta)+"#"
         msg = "*"+repr(pidX)+","+repr(pidY)+","+repr(pidTeta)+"#"
         # msg = "*0,1250,0#"
 
