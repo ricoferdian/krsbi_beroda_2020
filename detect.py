@@ -279,7 +279,7 @@ def detect(save_img=False):
                                 realDistanceY = object['realDistanceY']
                                 if(not isEndpointInit):
                                     isEndpointInit = True
-                                if(realDistanceY<150):
+                                if(realDistanceY<250):
                                     print('BOLA SUDAH DEKAT')
                                     isBolaDekat = True
                             else:
@@ -758,8 +758,8 @@ def readSerialData():
 def runMultiThread():
     t1 = threading.Thread(target=detect)
     t2 = threading.Thread(target=readSerialData)
-    # t3 = threading.Thread(target=updateBaseData)
-    # t4 = threading.Thread(target=updateLocalDataFromBase)
+    t3 = threading.Thread(target=updateBaseData)
+    t4 = threading.Thread(target=updateLocalDataFromBase)
 
     t1.start()
     t2.start()
@@ -768,8 +768,8 @@ def runMultiThread():
 
     t1.join()
     t2.join()
-    # t3.join()
-    # t4.join()
+    t3.join()
+    t4.join()
 
 
 if __name__ == '__main__':
