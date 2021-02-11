@@ -1,21 +1,45 @@
 class Robot():
     def __init__(self):
+        # Variabel destination object yang dituju robot
+        self.dest_x = 0
+        self.dest_y = 0
+        self.dest_theta = 0
+
+        # Variabel aksi utama
         self.is_kick_off = False
         self.is_free_kick = False
         self.is_reset = False
 
+        # Variabel status apa yang mau dilakukan
         self.is_dribbling_bola = False
         self.is_bola_dekat = False
         self.is_tendang_bola = False
         self.is_gawang_dekat = False
+        self.is_dest_found = False
 
+        # Variabel trajectory dari mikro
         self.my_trajectory_x = 0
         self.my_trajectory_y = 0
 
+        # Variabel gyro dari mikro
+        self.my_gyro = 0
+
+        # Variabel absolut lapangan (belum dihitung)
         self.my_absolute_x = 0
         self.my_absolute_y = 0
 
-        self.my_gyro = 0
+    def set_dest(self, x, y, theta):
+        self.dest_x = x
+        self.dest_y = y
+        self.dest_theta = theta
+        self.is_dest_found = True
+
+    def get_dest(self):
+        return self.dest_x, self.dest_y, self.dest_theta
+
+    # Fungsi untuk dipanggil saat parsing data ke mikro
+    def get_destination(self):
+        return self.dest_x, self.dest_y, self.dest_theta, self.is_tendang_bola, self.is_bola_dekat, self.is_reset
 
     def set_absolute(self, x, y):
         self.my_absolute_x = x
@@ -55,8 +79,14 @@ class Robot():
     def set_gawang_dekat(self, gawangdekat):
         self.is_gawang_dekat = gawangdekat
 
-    def get_kick_off(self):
+    def get_kickoff(self):
         return self.is_kick_off
+
+    def get_dest_status(self):
+        return self.is_dest_found
+
+    def set_dest_status(self, status):
+        self.is_dest_found = status
 
     def get_reset(self):
         return self.is_reset

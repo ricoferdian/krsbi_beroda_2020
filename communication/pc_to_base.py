@@ -1,6 +1,9 @@
 import socket
 import time
 
+from objects.all_field_object import AllFielOjects
+from objects.robot import Robot
+
 HOST = '192.168.43.178'
 PORT = 5204
 arrayStrategy = [0, 3, 2, 0, 0, 5, 0, 0, 0, 1]
@@ -10,7 +13,7 @@ networkserial = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 networkserial.connect((HOST, PORT))
 
 
-def send_data_to_base(robot_object, all_field_objects):
+def send_data_to_base(robot_object: Robot, all_field_objects: AllFielOjects):
     x1, y1 = robot_object.get_my_trajectory()
     teta1 = robot_object.get_gyro()
     bolaX = 0
@@ -28,7 +31,7 @@ def parse_data_to_base(x1, y1, teta1, bolaX, bolaY, strategyStatus):
     networkserial.send(msg.encode())
 
 
-def get_data_from_base(robot_object, all_field_objects):
+def get_data_from_base(robot_object: Robot, all_field_objects: AllFielOjects):
     xRobot2 = 0.00
     yRobot2 = 0.00
     tetaRobot2 = 90.00

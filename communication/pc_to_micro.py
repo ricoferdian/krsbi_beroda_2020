@@ -1,15 +1,24 @@
 import serial
 import socket
 from findpath import rotateMatrix
+from objects.all_field_object import AllFielOjects
+from objects.robot import Robot
 
 gyro_calibration = 0
 
-def readSerialData(robot_object, all_field_objects):
+ser = serial.Serial('COM3', 115200, timeout=100000)
+
+
+def send_serial_data(x, y, teta, is_tendang, is_bola_dekat, is_reset):
+    msg = "*" + repr(x) + "," + repr(y) + "," + repr(teta) + "," + repr(is_tendang) + "," + repr(
+        is_bola_dekat) + "," + repr(is_reset) + "#"
+    ser.write(msg.encode())
+
+
+def read_serial_data(robot_object: Robot, all_field_objects: AllFielOjects):
     readdata = ''
     micro_data_received = [0 for i in range(4)]
     i = 0
-
-    ser = serial.Serial('COM3', 115200, timeout=100000)
 
     while (True):
         msg = ser.read()

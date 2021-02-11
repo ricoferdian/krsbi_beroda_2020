@@ -16,12 +16,20 @@ class FieldObject():
         self.real_distance_y = 0
         self.theta = 0
 
+        self.label = ''
+
     def set_center_objects(self, x1, y1, x2, y2):
         self.center_x = x2 + x1 / 2
         self.center_y = y2 + y1 / 2
 
         # Langsung get real distance
         self.get_real_distance()
+
+    def set_label(self, label):
+        self.label = label
+
+    def get_label(self):
+        return self.label
 
     def get_real_distance(self):
         # get real distance (pixel) dari koordinat object dalam kamera (x dan y)
